@@ -1,0 +1,42 @@
+{
+  "year": 2025,
+  "sampled": 600,
+  "listed_total": 4019,
+  "checked": 323,
+  "no_filing": 150,
+  "fetch_error": 127,
+  "by_rule": {
+    "bs_equation": {
+      "ok": 643,
+      "missing": 3
+    },
+    "cf_bridge": {
+      "ok": 604,
+      "missing": 26,
+      "mismatch": 15,
+      "rounding": 1
+    },
+    "cf_end_vs_bs_cash": {
+      "ok": 601,
+      "missing": 35,
+      "mismatch": 9,
+      "rounding": 1
+    },
+    "cf_net_change_label": {
+      "ok": 598,
+      "missing": 34,
+      "mismatch": 14
+    },
+    "cf_prior_end_is_current_begin": {
+      "ok": 309,
+      "missing": 11,
+      "mismatch": 3
+    },
+    "restatement": {
+      "ok": 1997,
+      "missing": 32,
+      "mismatch": 120
+    }
+  },
+  "corps_with_mismatch": 60
+}
