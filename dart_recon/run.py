@@ -28,9 +28,13 @@ def load(corp: dict, year: int) -> Statements | None:
 
 
 def check_corp(corp: dict, year: int) -> tuple[str, list[dict]]:
+    if client.tripped():  # 차단 감지 후에는 다음 회사로 넘어가지 않는다
+        return "not_run", []
     try:
         return _check_corp(corp, year)
-    except (OSError, RuntimeError):
+    except client.BlockedError:
+        return "fetch_error", []  # 차단을 일으킨 회사. 이후 회사는 not_run
+    except (OSError, RuntimeError, ValueError):
         return "fetch_error", []
 
 
@@ -78,6 +82,8 @@ def main() -> None:
         "no_filing": sum(1 for s, _ in results if s == "no_filing"),
         "fetch_error": sum(1 for s, _ in results if s == "fetch_error"),
         "by_rule": {r: dict(c) for r, c in sorted(by_rule.items())},
+        "not_run": sum(1 for s, _ in results if s == "not_run"),
+        "aborted_blocked": client.tripped(),
         "corps_with_mismatch": len({f["corp_code"] for f in findings if f["status"] == "mismatch"}),
     }
     (RESULTS / f"summary_{tag}.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2))

@@ -25,7 +25,7 @@ DART_OFFLINE=1 python3 -m dart_recon.run --year 2025 --sample 600 --seed 7   # �
 python3 -m dart_recon.triage --year 2025 --sample 600 --seed 7   # 원인 분류
 python3 -m unittest discover -s tests -t .
 ```
-DART 서버는 연속 요청 시 연결을 끊는다. 새로 받을 때는 직렬로 천천히 받는다.
+DART 서버는 연속 요청 시 연결을 끊는다. 클라이언트는 요청을 직렬화하고 최소 1초 간격(`DART_MIN_INTERVAL`, 1초 미만 불가)을 둔다. 재시도는 없고, 연결 리셋·빈 응답이 연속 3회면 차단기가 작동해 `BlockedError`로 수집 전체를 멈춘다(해당 회사는 fetch_error, 이후 회사는 `not_run`, summary의 `aborted_blocked`=true).
 출력: `results/findings_*.jsonl`, `summary_*.json`, `triage_*.json`. `*_before.*`는 이번 규칙 보강 전 결과.
 
 ## 결과 요약 (2025 사업보고서, 상장사 4,019개 중 600개 표본, seed 7)
