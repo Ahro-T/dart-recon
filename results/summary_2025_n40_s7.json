@@ -1,0 +1,35 @@
+{
+  "year": 2025,
+  "sampled": 40,
+  "listed_total": 4019,
+  "checked": 21,
+  "no_filing": 19,
+  "by_rule": {
+    "bs_equation": {
+      "ok": 42
+    },
+    "cf_bridge": {
+      "ok": 40,
+      "missing": 2
+    },
+    "cf_end_vs_bs_cash": {
+      "ok": 40,
+      "missing": 2
+    },
+    "cf_net_change_label": {
+      "ok": 38,
+      "missing": 2,
+      "mismatch": 2
+    },
+    "cf_prior_end_is_current_begin": {
+      "ok": 20,
+      "missing": 1
+    },
+    "restatement": {
+      "ok": 128,
+      "missing": 1,
+      "mismatch": 4
+    }
+  },
+  "corps_with_mismatch": 2
+}
