@@ -1,4 +1,7 @@
-# dart-recon — DART 재무제표 자동 대사기
+# fin — DART 재무제표 자동 대사기·시점별 저장(pit)
+
+dalab의 금융 데이터 모듈이다. 모든 명령은 `fin/` 디렉터리에서 실행한다. 금융 질문 분석은 `projects/<slug>/`에서 이 모듈을 가져다 쓴다.
+
 
 OpenDART 재무제표 API(`fnlttSinglAcntAll`)로 상장사 사업보고서를 받아, 공시 숫자들이 서로 맞는지 규칙으로 검사한다.
 불일치는 오류 확정이 아니다. 원인(반올림·오타, 재작성, 기준 차이, 우리 규칙의 오탐)을 `triage`로 분류하고 원문 공시와 대조해 판정한다.
@@ -19,10 +22,12 @@ OpenDART 재무제표 API(`fnlttSinglAcntAll`)로 상장사 사업보고서를 �
 
 ## 실행
 ```
-echo DART_API_KEY=... > .env            # .env, data/는 커밋하지 않는다
-python3 -m dart_recon.run --year 2025 --sample 600 --seed 7      # data/raw에 캐시하며 수집
+# 키: dalab 루트 .env의 DART_API_KEY. .env, fin/data/는 커밋하지 않는다
+cd fin
+python3 -m dart_recon.run --year 2025 --sample 600 --seed 7      # fin/data/raw에 캐시하며 수집
 DART_OFFLINE=1 python3 -m dart_recon.run --year 2025 --sample 600 --seed 7   # 캐시만 사용
 python3 -m dart_recon.triage --year 2025 --sample 600 --seed 7   # 원인 분류
+DART_OFFLINE=1 python3 -m dart_recon.pit --year 2025 --sample 600 --seed 7   # 캐시 -> pit 테이블
 python3 -m unittest discover -s tests -t .
 ```
 DART 서버는 연속 요청 시 연결을 끊는다. 클라이언트는 요청을 직렬화하고 최소 1초 간격(`DART_MIN_INTERVAL`, 1초 미만 불가)을 둔다. 재시도는 없고, 연결 리셋·빈 응답이 연속 3회면 차단기가 작동해 `BlockedError`로 수집 전체를 멈춘다(해당 회사는 fetch_error, 이후 회사는 `not_run`, summary의 `aborted_blocked`=true).
@@ -51,6 +56,14 @@ DART 서버는 연속 요청 시 연결을 끊는다. 클라이언트는 요청�
 - **SK디스커버리**: 전기 자산 +645.9억, 순이익 +151.9억. 주석에 관계기업 매각계획 변경에 따른 전기오류수정 재작성이 공시되어 있고 조정표 금액이 우리 차이와 일치. 오탐이 아니라 규칙이 잡은 진짜 재작성(공시됨)이므로 `mismatch`로 유지.
 - **삼정펄프**: 규칙 4개가 정확히 1,000원 차이를 보고. 2024 보고서와 2025 보고서 비교로 전기 열 기말현금 한 칸이 원인임을 확인(독립 4건이 아닌 1건). 진짜 불일치이나 소액.
 - **원인 미확인**: 청담글로벌(기초현금 vs 전기 기말현금 31억), 삼양홀딩스(현금 소액 차이), 메타케어(전기 자산·자본 +11.2억, 순이익 −7.8억).
+
+## 시점별 저장 (`dart_recon/pit.py`)
+같은 (회사, 재무제표구분, 계정, 회계연도) 값을 보고서마다 따로 저장한다(`data/pit.sqlite`, 테이블 `pit`). 해당 연도 사업보고서의 당기 값이 최초값, 다음 연도 보고서의 전기 값이 나중값이다.
+뷰: `as_first_reported`(최초값), `latest`(최신값), `restatement_candidates`(최초≠최신). 캐시(`data/raw/fs`)만 읽으며 `DART_OFFLINE=1`이 필요하다. 같은 PK는 덮어쓰므로 다시 적재해도 중복이 없다. 한 보고서에 같은 키가 둘 이상이면 건너뛴다.
+실행 결과(2025, 표본 600, seed 7; `results/pit_2025_n600_s7_summary.json`):
+- pit 행 217,271, 회사 326 (모호한 키 116개 건너뜀)
+- 최초값≠최신값 행 2,067, 회사 203
+- 규칙 `restatement`의 7개 계정 기준으로 pit과 비교한 307개사: 일치 307, 불일치 0 (전 계정 기준은 일치 145, 불일치 162)
 
 ## 한계
 - 표본 600개 중 323개만 검증됨. 수집 실패 127개는 결과에 없다.

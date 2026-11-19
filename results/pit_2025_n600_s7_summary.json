@@ -1,0 +1,84 @@
+{
+  "year": 2025,
+  "sampled": 600,
+  "load": {
+    "files_loaded": 643,
+    "rows_loaded": 217271,
+    "ambiguous_keys_skipped": 116
+  },
+  "pit_rows": 217271,
+  "pit_corps": 326,
+  "first_vs_latest_rows": 43354,
+  "restatement_candidate_rows": 2067,
+  "restatement_candidate_corps": 203,
+  "restatement_candidate_corp_fs": 203,
+  "crosscheck_vs_rules_restatement": {
+    "compared_corps": 307,
+    "agree": {
+      "all_accounts": 145,
+      "rule_accounts": 307
+    },
+    "disagree": {
+      "all_accounts": 162,
+      "rule_accounts": 0
+    },
+    "detail": {
+      "all_accounts_both_clean": 104,
+      "all_accounts_both_flagged": 41,
+      "all_accounts_pit_only": 162,
+      "compared_corps": 307,
+      "rule_accounts_both_clean": 266,
+      "rule_accounts_both_flagged": 41
+    },
+    "samples": {
+      "rules_only": [],
+      "pit_only": [
+        {
+          "corp": "미래에셋생명",
+          "fs_div": "CFS",
+          "pit_keys": [
+            "BS|ifrs-full_OtherNonfinancialLiabilities|-"
+          ],
+          "pit_keys_in_rule_accounts": []
+        },
+        {
+          "corp": "아이티아이즈",
+          "fs_div": "CFS",
+          "pit_keys": [
+            "BS|ifrs-full_EquityAttributableToOwnersOfParent|-",
+            "BS|ifrs-full_RetainedEarnings|-",
+            "BS|ifrs-full_NoncontrollingInterests|-",
+            "CF|dart_AdjustmentsForAssetsLiabilitiesOfOperatingActivities|-"
+          ],
+          "pit_keys_in_rule_accounts": []
+        },
+        {
+          "corp": "대한광통신",
+          "fs_div": "CFS",
+          "pit_keys": [
+            "CF|당기손익인식금융자산처분이익|-"
+          ],
+          "pit_keys_in_rule_accounts": []
+        },
+        {
+          "corp": "삼영전자공업",
+          "fs_div": "CFS",
+          "pit_keys": [
+            "SCE|ifrs-full_DividendsPaid|연결재무제표 [member]",
+            "SCE|ifrs-full_DividendsPaid|자본 [구성요소]|지배기업의 소유주에게 귀속되는 지분 [구성요소]|이익잉여금 [구성요소]",
+            "SCE|ifrs-full_DividendsPaid|자본 [구성요소]|지배기업의 소유주에게 귀속되는 지분 [구성요소]"
+          ],
+          "pit_keys_in_rule_accounts": []
+        },
+        {
+          "corp": "멤레이비티",
+          "fs_div": "CFS",
+          "pit_keys": [
+            "CF|dart_RepaymentsOfLongTermBorrowings|-"
+          ],
+          "pit_keys_in_rule_accounts": []
+        }
+      ]
+    }
+  }
+}

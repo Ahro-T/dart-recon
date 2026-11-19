@@ -27,11 +27,13 @@ def api_key() -> str:
     key = os.environ.get("DART_API_KEY")
     if key:
         return key
-    env = ROOT / ".env"
+    env = ROOT.parent / ".env"  # dalab 루트 .env
+    if not env.exists():
+        raise RuntimeError("DART_API_KEY not set (dalab 루트 .env or environment)")
     for line in env.read_text().splitlines():
         if line.startswith("DART_API_KEY="):
             return line.split("=", 1)[1].strip()
-    raise RuntimeError("DART_API_KEY not set (.env or environment)")
+    raise RuntimeError("DART_API_KEY not set (dalab 루트 .env or environment)")
 
 
 class BlockedError(Exception):

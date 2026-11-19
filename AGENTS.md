@@ -1,9 +1,9 @@
-# dart-recon 작업 규칙
+# fin — 금융 데이터 모듈 작업 규칙
 
-OpenDART 재무제표의 내부 정합성(3표 연결, 전기-당기 연속, 재작성)을 규칙으로 검사하고, 불일치를 원문으로 판정하는 도구.
+dalab의 금융 데이터 모듈: DART·ECOS 수집, 시점별 저장(pit), 재무제표 자동 대사(품질 검증)
 
 ## 데이터 경계
-- `.env`(DART_API_KEY)와 `data/`는 커밋하지 않는다. 캐시는 `data/raw/fs`.
+- 키는 dalab 루트 `.env`(DART_API_KEY, ECOS_API_KEY)에서 읽는다. `.env`와 `fin/data/`는 커밋하지 않는다. 캐시는 `fin/data/raw/fs`, pit DB는 `fin/data/pit.sqlite`.
 
 ## DART 접근
 - 요청은 직렬, 최소 1초 간격. 연속 3회 실패 시 중단하는 차단기를 우회·비활성화하지 않는다.
@@ -18,4 +18,4 @@ OpenDART 재무제표의 내부 정합성(3표 연결, 전기-당기 연속, 재
 - 오탐이 확인되면 규칙 + 테스트로 올리고, 전후 불일치 건수를 `results/`에 남긴다.
 
 ## 완료의 정의
-- `python3 -m unittest discover -s tests -t .` 통과 + 결과 파일 갱신 + 커밋.
+- `fin/`에서 `python3 -m unittest discover -s tests -t .` 통과 + 결과 파일 갱신 + 커밋.
