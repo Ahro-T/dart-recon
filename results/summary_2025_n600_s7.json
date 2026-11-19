@@ -17,15 +17,15 @@
       "rounding": 1
     },
     "cf_end_vs_bs_cash": {
-      "ok": 601,
+      "ok": 603,
       "missing": 35,
-      "mismatch": 9,
+      "mismatch": 7,
       "rounding": 1
     },
     "cf_net_change_label": {
-      "ok": 598,
+      "ok": 600,
       "missing": 34,
-      "mismatch": 14
+      "mismatch": 12
     },
     "cf_prior_end_is_current_begin": {
       "ok": 309,
@@ -35,8 +35,9 @@
     "restatement": {
       "ok": 1997,
       "missing": 32,
-      "mismatch": 120
+      "mismatch": 113,
+      "reclassified": 7
     }
   },
-  "corps_with_mismatch": 60
+  "corps_with_mismatch": 52
 }

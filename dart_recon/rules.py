@@ -2,6 +2,7 @@
 
 Each rule returns Finding records. A finding is not an error by itself:
 `status` is "ok" (exact), "rounding" (within reporting-unit rounding), "mismatch",
+"reclassified" (restatement explained by a discontinued-operations reclassification),
 or "missing" (the rule's inputs are not in the filing).
 """
 
@@ -81,6 +82,11 @@ def _norm(name: str) -> str:
     return "".join(name.split())
 
 
+def _mistagged(key: str, row: dict) -> bool:
+    """공시 회사가 표준계정코드를 잘못 붙인 줄. '순증감' 코드가 '기초/기말 현금' 줄에 붙은 경우(퀀타매트릭스 2025)."""
+    return key == "cf_change" and any(w in _norm(row["account_nm"]) for w in ("기초", "기말"))
+
+
 class Statements:
     """Index of one filing (one corp, year, fs_div)."""
 
@@ -98,7 +104,7 @@ class Statements:
         sj_set = {"IS", "CIS"} if sj == "IS" else {sj}
         rows = [r for r in self.rows if r["sj_div"] in sj_set]
         for r in rows:
-            if r["account_id"] in ids:
+            if r["account_id"] in ids and not _mistagged(key, r):
                 return amount(r.get(f"{period}_amount"))
         wanted = {_norm(n) for n in names}
         for r in rows:
@@ -149,12 +155,29 @@ def bs_equation(s: Statements) -> list[Finding]:
     return out
 
 
+def held_for_sale_cash(s: Statements, period: str) -> int | None:
+    """현금흐름표 주석 줄 '당기말 매각예정자산집단에 포함된 현금및현금성자산'(롯데지주 2025). 해당 열의 값."""
+    rows = [r for r in s.rows if r["sj_div"] == "CF" and "매각예정" in r["account_nm"]
+            and "현금및현금성자산" in _norm(r["account_nm"]) and "포함" in r["account_nm"]]
+    preferred = [r for r in rows if "당기말" in r["account_nm"]] or rows
+    for r in preferred:
+        v = amount(r.get(f"{period}_amount"))
+        if v:
+            return v
+    return None
+
+
 def cf_end_vs_bs_cash(s: Statements) -> list[Finding]:
-    return [
-        s.finding("cf_end_vs_bs_cash", p, s.get("cf_end", p), s.get("bs_cash", p),
-                  "현금흐름표 기말현금 = 재무상태표 현금및현금성자산")
-        for p in PERIODS
-    ]
+    """현금흐름표 기말현금 = 재무상태표 현금 + (매각예정자산집단에 포함된 현금)."""
+    out = []
+    for p in PERIODS:
+        end, bs = s.get("cf_end", p), s.get("bs_cash", p)
+        hfs = held_for_sale_cash(s, p)
+        detail = "현금흐름표 기말현금 = 재무상태표 현금및현금성자산"
+        if end is not None and bs is not None and hfs is not None and end - bs == hfs:
+            bs, detail = bs + hfs, detail + f" | 사용: 매각예정자산집단에 포함된 현금={hfs}"
+        out.append(s.finding("cf_end_vs_bs_cash", p, end, bs, detail))
+    return out
 
 
 # 영업·투자·재무 활동 밖에서 현금을 바꾸는 조정 항목. 회사마다 표시하는 항목과 이름이 다르다.
@@ -173,6 +196,8 @@ def reconciling_items(s: Statements, period: str) -> list[tuple[str, int]]:
             continue
         name = _norm(r["account_nm"])
         if "증감" in name or "증가" in name:  # '환율변동효과 반영전 순증가' 같은 합계 줄 제외
+            continue
+        if name.startswith(("당기말", "전기말")):  # 기말현금 구성 주석 줄(롯데지주)은 현금흐름 항목이 아니다
             continue
         if r["account_id"] in RECONCILING_IDS or any(k in name for k in RECONCILING_NAME_KEYS):
             v = amount(r.get(f"{period}_amount"))
@@ -245,13 +270,29 @@ def run_single(s: Statements) -> list[Finding]:
 # ---- cross-filing rule ---------------------------------------------------------------
 
 
+def _has_discontinued_prior(s: Statements) -> bool:
+    return any(
+        r["sj_div"] in ("IS", "CIS") and r["account_id"].endswith("ProfitLossFromDiscontinuedOperations")
+        and (amount(r.get("frmtrm_amount")) or 0) != 0
+        for r in s.rows
+    )
+
+
 def restatement(current: Statements, previous: Statements) -> list[Finding]:
-    """올해 보고서의 전기 숫자 vs 작년 보고서의 당기 숫자. 다르면 재작성(또는 재분류)."""
+    """올해 보고서의 전기 숫자 vs 작년 보고서의 당기 숫자. 다르면 재작성(또는 재분류).
+
+    매출만 줄고 순이익·자산·부채·자본은 그대로이며 올해 보고서 전기 열에 중단영업손익이 있으면
+    중단영업 재분류(효성화학 2025 주석 15)로 보고 status를 "reclassified"로 둔다.
+    """
     out = []
     for key in RESTATEMENT_ACCOUNTS:
         now_prior = current.get(key, "frmtrm")
         then_current = previous.get(key, "thstrm")
-        f = current.finding("restatement", "frmtrm", now_prior, then_current,
-                            f"{key}: {current.year}년 보고서의 전기 = {previous.year}년 보고서의 당기")
-        out.append(f)
+        out.append(current.finding("restatement", "frmtrm", now_prior, then_current,
+                                   f"{key}: {current.year}년 보고서의 전기 = {previous.year}년 보고서의 당기"))
+    changed = {f.detail.split(":")[0] for f in out if f.status == "mismatch"}
+    revenue = next(f for f in out if f.detail.startswith("revenue:"))
+    if changed == {"revenue"} and revenue.diff < 0 and _has_discontinued_prior(current):
+        revenue.status = "reclassified"
+        revenue.detail += " | 중단영업 재분류 추정(순이익·자산·자본 불변, 전기 열에 중단영업손익 있음)"
     return out

@@ -1,22 +1,18 @@
 {
   "findings_total": 5056,
-  "non_ok_findings": 163,
-  "corps_with_non_ok": 62,
+  "non_ok_findings": 152,
+  "corps_with_non_ok": 54,
   "by_category": {
     "restatement": 99,
     "unclassified": 27,
     "rounding_typo": 25,
-    "restatement_discontinued": 7,
-    "held_for_sale_cash": 3,
-    "column_shift": 2
+    "held_for_sale_cash": 1
   },
   "corps_by_category": {
     "unclassified": 17,
     "restatement": 32,
     "rounding_typo": 8,
-    "restatement_discontinued": 7,
-    "held_for_sale_cash": 2,
-    "column_shift": 1
+    "held_for_sale_cash": 1
   },
   "by_rule_and_category": {
     "cf_bridge": {
@@ -26,12 +22,11 @@
     "cf_end_vs_bs_cash": {
       "rounding_typo": 3,
       "unclassified": 4,
-      "held_for_sale_cash": 3
+      "held_for_sale_cash": 1
     },
     "cf_net_change_label": {
       "unclassified": 9,
-      "rounding_typo": 3,
-      "column_shift": 2
+      "rounding_typo": 3
     },
     "cf_prior_end_is_current_begin": {
       "rounding_typo": 1,
@@ -39,7 +34,6 @@
     },
     "restatement": {
       "restatement": 99,
-      "restatement_discontinued": 7,
       "rounding_typo": 14
     }
   },
@@ -331,45 +325,6 @@
       "detail": "기말 - 기초 = 영업 + 투자 + 재무 + 조정항목 | 사용: 매각예정자산의 처분=75000000, 외화현금및현금성자산의 환율변동효과=6016402581"
     },
     {
-      "category": "restatement_discontinued",
-      "corp_name": "삼양홀딩스",
-      "corp_code": "00126937",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -138253551340,
-      "unit": 1,
-      "rcept_no": "20260323001299",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
-      "category": "held_for_sale_cash",
-      "corp_name": "롯데지주",
-      "corp_code": "00120562",
-      "rule": "cf_end_vs_bs_cash",
-      "fs_div": "CFS",
-      "period": "thstrm",
-      "status": "mismatch",
-      "diff": 359586889,
-      "unit": 1,
-      "rcept_no": "20260316001619",
-      "detail": "현금흐름표 기말현금 = 재무상태표 현금및현금성자산"
-    },
-    {
-      "category": "held_for_sale_cash",
-      "corp_name": "롯데지주",
-      "corp_code": "00120562",
-      "rule": "cf_end_vs_bs_cash",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": 1227929244,
-      "unit": 1,
-      "rcept_no": "20260316001619",
-      "detail": "현금흐름표 기말현금 = 재무상태표 현금및현금성자산"
-    },
-    {
       "category": "restatement",
       "corp_name": "킵스파마",
       "corp_code": "01037214",
@@ -445,19 +400,6 @@
       "diff": -3817480038,
       "unit": 1,
       "rcept_no": "20260319000768",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
-      "category": "restatement_discontinued",
-      "corp_name": "씨아이테크",
-      "corp_code": "00127158",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -13680479367,
-      "unit": 1,
-      "rcept_no": "20260323001571",
       "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
     },
     {
@@ -784,19 +726,6 @@
       "unit": 1,
       "rcept_no": "20260319001245",
       "detail": "기말 - 기초 = 영업 + 투자 + 재무 + 조정항목 | 사용: 외화환산이익=81103716, 현금및현금성자산에 대한 환율변동효과=-77824456"
-    },
-    {
-      "category": "restatement_discontinued",
-      "corp_name": "모두투어",
-      "corp_code": "00456218",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -1089476234,
-      "unit": 1,
-      "rcept_no": "20260319000605",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
     },
     {
       "category": "held_for_sale_cash",
@@ -1254,19 +1183,6 @@
       "detail": "현금흐름표 기말현금 = 재무상태표 현금및현금성자산"
     },
     {
-      "category": "restatement_discontinued",
-      "corp_name": "에코글로우",
-      "corp_code": "00896753",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -6073213854,
-      "unit": 1,
-      "rcept_no": "20260319000929",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
       "category": "restatement",
       "corp_name": "코람코더원리츠",
       "corp_code": "01180118",
@@ -1356,32 +1272,6 @@
       "unit": 1,
       "rcept_no": "20260213001506",
       "detail": "cf_operating: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
-      "category": "column_shift",
-      "corp_name": "퀀타매트릭스",
-      "corp_code": "01311286",
-      "rule": "cf_net_change_label",
-      "fs_div": "CFS",
-      "period": "thstrm",
-      "status": "mismatch",
-      "diff": 6111533862,
-      "unit": 1,
-      "rcept_no": "20260323000995",
-      "detail": "공시된 현금 순증감 = 영업+투자+재무 또는 기말-기초"
-    },
-    {
-      "category": "column_shift",
-      "corp_name": "퀀타매트릭스",
-      "corp_code": "01311286",
-      "rule": "cf_net_change_label",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": 6863774506,
-      "unit": 1,
-      "rcept_no": "20260323000995",
-      "detail": "공시된 현금 순증감 = 영업+투자+재무 또는 기말-기초"
     },
     {
       "category": "restatement",
@@ -1579,19 +1469,6 @@
       "detail": "현금흐름표 기말현금 = 재무상태표 현금및현금성자산"
     },
     {
-      "category": "restatement_discontinued",
-      "corp_name": "효성화학",
-      "corp_code": "01316236",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -385968553686,
-      "unit": 1,
-      "rcept_no": "20260311004423",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
       "category": "restatement",
       "corp_name": "인탑스",
       "corp_code": "00226866",
@@ -1603,19 +1480,6 @@
       "unit": 1,
       "rcept_no": "20260317000896",
       "detail": "cf_operating: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
-      "category": "restatement_discontinued",
-      "corp_name": "코렌텍",
-      "corp_code": "00541437",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -8073067358,
-      "unit": 1,
-      "rcept_no": "20260319001143",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
     },
     {
       "category": "restatement",
@@ -1707,19 +1571,6 @@
       "unit": 1,
       "rcept_no": "20251202000364",
       "detail": "cf_operating: 2025년 보고서의 전기 = 2024년 보고서의 당기"
-    },
-    {
-      "category": "restatement_discontinued",
-      "corp_name": "롯데케미칼",
-      "corp_code": "00165413",
-      "rule": "restatement",
-      "fs_div": "CFS",
-      "period": "frmtrm",
-      "status": "mismatch",
-      "diff": -535565965264,
-      "unit": 1,
-      "rcept_no": "20260312001296",
-      "detail": "revenue: 2025년 보고서의 전기 = 2024년 보고서의 당기"
     },
     {
       "category": "unclassified",
