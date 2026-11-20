@@ -1,0 +1,1545 @@
+{
+ "round": 3,
+ "skill": "v4",
+ "cases": [
+  {
+   "case_id": "d-00105475",
+   "claims": [
+    {
+     "text": "금강철강 2025 사업보고서(연결, 접수번호 20260319000015)는 16개 규칙 중 정상 14건, 불일치 2건입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 모두 현금흐름표 연결 규칙(KDQ-0003 cf_bridge)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기: 기말(35059362380) - 기초(33432996271) = 1626366109인데, 영업(5495784469) + 투자(1104157350) + 재무(-2362065994) + 환율변동효과(-10221349) = 4227654476이라 도구가 보고한 차이는 -2601288367입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기: 좌변 7483223105, 우변 7379754864, 도구가 보고한 차이는 103468241입니다. dart_explain은 두 건 모두 원인 후보를 'unclassified'(가설에 해당하지 않음)로 분류했고, 근거는 API 수치 기반이며 공시 원문은 확인하지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "중단영업·매각예정 현금, 재작성 공시, 계정코드 오기재 같은 도구 후보로는 설명되지 않아 원인은 확인되지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원문 공시 대조가 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00107066",
+   "claims": [
+    {
+     "text": "남광토건 2025 사업보고서(연결, rcept_no 20260323000403)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 ok 9건, mismatch 7건.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표·재무상태표 내부 규칙은 모두 정합: 자산=부채+자본(당기 410092454000, 전기 417033570000), 현금흐름표 기말현금=재무상태표 현금(당기 75757044000, 전기 47423478000), 기초현금=전기 기말현금, 현금흐름 브리지도 일치.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "어긋난 것은 전기 숫자뿐으로 KDQ-0006(2025년 보고서의 전기 vs 2024년 보고서의 당기)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "7건이며, 도구가 보고한 차이값은 매우 작다: assets 34, liabilities 238, equity -204, bs_cash 117, revenue -325, net_income -619, cf_operating 375.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "예: 자산 전기 417033570000 vs 417033569966.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025년 보고서의 전기값은 천원 단위로 맞춰진 값(끝자리 000)이고 2024년 보고서 당기값은 원 단위 값으로 보이며, 도구 원인 후보도 rounding_typo(원 단위 공시에서 소액 반올림·오타급)다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "회사가 공시한 재작성이나 중단영업 재분류, 매각예정 현금 근거는 도구 출력에 없다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 이 판단은 OpenDART API 수치 기반 가설이며 공시 원문 확인 전이다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00127158",
+   "claims": [
+    {
+     "text": "씨아이테크 2025 사업보고서(연결, 접수번호 20260323001571)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 15건은 정합(ok)이고 1건이 reclassified입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계=부채총계+자본총계는 126953652884로 차이 0입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치로 보이는 항목은 규칙 KDQ-0006(전기 재작성 비교)의 매출액입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025년 보고서의 전기 매출액은 33756128642인데 2024년 보고서의 당기 매출액은 47436608009이고, 도구가 보고한 차이값은 -13680479367입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구는 이를 중단영업 재분류 추정으로 설명합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "순이익·자산·자본은 변하지 않았고 전기 열에 중단영업손익이 있기 때문입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "즉 오류가 아니라 중단영업 분리로 전기 매출이 계속영업에서 빠진 것으로 보입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 도구 출력은 원문 확인을 명시하지 않았고 OpenDART API 수치만 본 것입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00140168",
+   "claims": [
+    {
+     "text": "HS애드 2025 사업보고서(연결, 접수번호 20260413002635)에서 16개 검사 중 15개는 정합이고 1개가 불일치입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 KDQ-0002(현금흐름표 기말현금 = 재무상태표 현금및현금성자산)로, 현금흐름표 기말현금은 45707150109, 재무상태표 현금및현금성자산은 46445853027이며 도구가 보고한 차이값은 -738702918입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 항등식(자산총계 = 부채총계 + 자본총계)은 당기·전기 모두 차이 0으로 정합입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "기준으로는 현금흐름표 기말현금과 재무상태표 현금이 모두 63210221948로 같아, 어긋나는 것은 당기 현금 한 곳입니다. dart_explain의 원인 후보는 '미분류(위 가설에 해당하지 않음)'이고 API 수치 기반 가설이며 공시 원문은 확인하지 못했습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "매각예정자산집단 현금 포함이나 중단영업 등 특정 원인을 뒷받침하는 증거는 도구 출력에 없으므로 원인은 확인되지 않았고, 공시 원문 주석 확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00145473",
+   "claims": [
+    {
+     "text": "이글벳 2025 사업보고서(별도재무제표, 접수번호 20260317000585)를 dart_check로 검사한 결과 16개 규칙 결과가 모두 ok이며 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "예: 당기 자산총계 63982119435 = 부채총계+자본총계 63982119435(차이 0), 전기 61237139526 = 61237139526(차이 0), 당기 현금흐름표 기말현금 4544885173 = 재무상태표 현금 4544885173.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 재작성 여부도 확인했으나 문제가 없었습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 맞지 않는 숫자는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00165413",
+   "claims": [
+    {
+     "text": "롯데케미칼 2025 사업보고서(연결, 접수번호 20260312001296)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 15개 규칙은 정합(ok)이고, 재무상태표 등식(자산총계 31117333049679 = 부채+자본)도 차이 0으로 맞습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "어긋나는 곳은 전기 숫자 1건(KDQ-0006, restatement)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "매출의 2025년 보고서 전기값 19894809600093과 2024년 보고서의 당기값 20430375565357이 다르고, 도구가 보고한 차이는 -535565965264입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구는 이를 중단영업 재분류 추정으로 분류했습니다(순이익·자산·자본은 불변이고 전기 열에 중단영업손익이 있음).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "즉 중단영업이 계속영업 매출에서 빠지며 전기 매출이 재작성된 것으로 보이며 오류는 아닙니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 원문 공시를 직접 확인한 것은 아니고 API 수치 기반 추정입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00261735",
+   "claims": [
+    {
+     "text": "위노바 2025 사업보고서(별도재무제표, 접수번호 20260731000140)를 검사한 결과 16개 규칙 중 15개는 정합이고 1개가 불일치입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 KDQ-0003(현금흐름표 연결: 기말 - 기초 = 영업 + 투자 + 재무 + 조정항목)의 전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "값으로, 좌변 -161139624, 우변 -161142624, 도구가 보고한 차이값은 3000입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기 재무상태표 등식(자산총계 8658072245 = 부채총계 + 자본총계)은 정합입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구가 보고한 차이값이 작고 중단영업·매각예정 현금 등 다른 원인을 시사하는 증거가 도구 출력에 없어 반올림 또는 오타 수준의 소액 차이로 보이나, 원문 공시는 확인하지 못했고 OpenDART API 수치만 근거로 한 판단입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00297095",
+   "claims": [
+    {
+     "text": "나라엠앤디 2025 사업보고서(연결, 접수번호 20260319000720)에서 3건의 불일치가 있습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "(1)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "KDQ-0002: 현금흐름표 기말현금 27825181819 vs 재무상태표 현금및현금성자산 27825185675, 도구가 보고한 차이 -3856.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "(2)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "KDQ-0003: 기말-기초 3840089941 vs 영업+투자+재무+환율변동효과 합 3840093797, 차이 -3856.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "(3)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "KDQ-0004: 공시된 현금 순증감 3840093797 vs 기말-기초 3840089941, 차이 3856.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "세 건 모두 같은 크기의 차이값(3856)이며 도구가 보고한 차이값이 작습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 현금(27825185675)과 공시된 순증감(3840093797)은 서로 일치하고 현금흐름표 기말현금만 어긋나므로, 현금흐름표 기말현금 한 곳의 소액 차이(반올림 또는 오타 수준)로 보입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "매각예정 현금이나 중단영업 재분류, 주석 재작성 등의 근거는 도구 출력에 없었고, 원문 공시는 확인하지 못했습니다(OpenDART API 수치 기준).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00305941",
+   "claims": [
+    {
+     "text": "노브랜드 2025 사업보고서(연결, 접수번호 20260323001509)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 14개 규칙은 일치, 2개는 불일치입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "둘 다",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 브리지 규칙(KDQ-0003, 기말 - 기초 = 영업 + 투자 + 재무 + 조정항목)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기: 좌변 -26114025847, 우변 -25100997704, 도구가 보고한 차이 -1013028143.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기: 좌변 17090223285, 우변 15689624139, 도구가 보고한 차이 1400599146(환율변동효과 65368370 반영 후).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "증거: 당기 기초현금 35499010786, 기말현금 9384984939, 영업 -15546412812, 투자 -19457930245, 재무 9903345353, 환율변동효과 106478470. dart_explain의 원인 후보는 'unclassified'(가설에 해당하지 않음)이며 API 수치 기반이라 공시 원문 확인 전입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구 출력만으로는 차이 원인(예: 매각예정자산 현금 포함, 재작성 등)을 확인할 수 없어 원인 미확인으로 분류합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "차이가 당기·전기 모두 발생하며 소액 수준이 아니므로 원문 주석 확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00317487",
+   "claims": [
+    {
+     "text": "네, 맞지 않는 숫자가 있습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025년 사업보고서(연결, rcept_no 20260407003639)의 전기 숫자가 2024년 사업보고서(rcept_no 20250331003863)의 당기 숫자와 4개 항목에서 다릅니다(KDQ-0006, 12개 정합 / 4개 불일치).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계: 2025년 보고서의 전기 125761014496, 2024년 보고서의 당기 128315130034, 도구 차이값 -2554115538.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "부채총계: 62197012224 vs 62250831059, 차이값 -53818835.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자본총계: 63564002272 vs 66064298975, 차이값 -2500296703.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기순이익(손실): -19704423658 vs -19950126955, 차이값 245703297.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구는 원인 후보로 '전기 숫자 변경(재작성·재분류·연결범위 변경 등)'을 제시했지만 이는 API 수치 기반 가설이며 공시 원문(주석)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "확인 전입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "회사가 재작성을 공시했는지 확인되지 않아 원인은 확정할 수 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00411048",
+   "claims": [
+    {
+     "text": "에스앤에스텍 2025 사업보고서(연결, 접수번호 20260316000487)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 16개 규칙 중 15개 정합, 1개 불일치입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 KDQ-0006(전기 숫자 변경): 현금및현금성자산(bs_cash)이 2025년 보고서의 전기 금액은 75572279831인데 2024년 보고서의 당기 금액은 75586629831이며, 도구가 보고한 차이값은 -14350000입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계 = 부채총계 + 자본총계 등 당기 재무상태표 등식은 정합입니다. dart_explain은 원인 후보로 '전기 숫자 변경(재작성·재분류·연결범위 변경 등)'만 제시했고 이는 공시 원문 확인 전의 API 수치 기반 가설입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "회사가 주석으로 재작성을 공시했는지, 단순 오타인지는 도구 출력만으로 확인되지 않아 원인은 확정할 수 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00456218",
+   "claims": [
+    {
+     "text": "모두투어 2025 사업보고서(연결, rcept_no 20260319000605)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 15개 규칙은 정합(ok)이고, 현금흐름표·재무상태표 관련 불일치는 없었습니다(예: 자산총계 = 부채총계+자본총계 231495650416 = 231495650416, 차이 0).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "어긋난 것은 전기 숫자 1건(KDQ-0006, reclassified)뿐입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025년 보고서의 전기 매출액은 250462346191인데 2024년 보고서의 당기 매출액은 251551822425로, 도구가 보고한 차이값은 -1089476234입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구는 순이익·자산·자본은 불변이고 전기 열에 중단영업손익이 있어 중단영업 재분류로 전기 매출이 계속영업에서 빠진 것으로 추정했습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 이는 API 수치 기반 추정이며 원문 공시를 확인한 것은 아닙니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00531865",
+   "claims": [
+    {
+     "text": "유니테크노 2025 사업보고서(연결, rcept_no 20260323001426)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 ok 9건, mismatch 7건입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "7건 모두 KDQ-0006(전기 = 직전 사업보고서의 당기)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "규칙에서 나왔고, 2025년 보고서의 전기 숫자가 2024년 보고서의 당기 숫자와 소액 다릅니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구가 보고한 차이값은 자산총계 -210(231054729000 vs 231054729210), 부채총계 -612(91677587000 vs 91677587612), 자본총계 402(139377142000 vs 139377141598), 기말현금 70(19933607000 vs 19933606930), 매출 -332(105133809000 vs 105133809332), 당기순이익 155(10631179000 vs 10631178845), 영업활동현금흐름 221(12853873000 vs 12853872779)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구가 보고한 차이값이 모두 작고, 2025년 보고서 쪽 전기 값이 천 원 단위로 끝나 있어 2025년 보고서가 천 원 이하를 절사·반올림해 표기한 것으로 보입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "이는 dart_explain의 원인 후보(rounding_typo)와 일치합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "내용을 바꾼 재작성, 중단영업 재분류 같은 구조적 원인을 시사하는 값은 도구 출력에 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 공시 원문은 확인하지 않은 API 수치 기반 가설입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00561732",
+   "claims": [
+    {
+     "text": "아스플로 2025 사업보고서(연결, 접수번호 20260316001408)를 dart_check로 검사한 결과 16개 규칙이 모두 ok이고 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "예: 당기 자산총계 118463666486 = 부채총계+자본총계 118463666486(diff 0), 전기 138247317749도 동일하게 일치(diff 0).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재작성 확인(restatement_checked)도 true였습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 맞지 않는 숫자는 발견되지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00656021",
+   "claims": [
+    {
+     "text": "비에프랩스 2025 사업보고서(연결, rcept_no 20260324000003)를 dart_check로 검사한 결과 16개 규칙이 모두 ok이고 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 등식(자산총계 46755795407 = 부채+자본 46755795407, 전기 39581621840 동일)과 현금흐름표 기말현금 834951783이 재무상태표 현금과 일치(diff 0)하며, 전기 숫자 재작성 점검(restatement_checked: true)에서도 문제가 없었습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "어긋나는 곳이 없어 설명할 원인도 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00843900",
+   "claims": [
+    {
+     "text": "육일씨엔에쓰 2025 사업보고서(연결, 접수번호 20260319000768)는 16개 규칙 중 15개가 정합이고 1개가 불일치입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 등식(자산총계 = 부채총계 + 자본총계, 당기 56008781596)을 포함한 나머지 규칙은 모두 ok입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 KDQ-0006(전기 재작성 일치)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "규칙의 매출(수익(매출액), ifrs-full_Revenue)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025년 보고서에 적힌 전기 매출은 33725388352인데, 2024년 보고서(접수번호 20250320000890)의 당기 매출은 37542868390이었고, 도구가 보고한 차이값은 -3817480038입니다. dart_history에서도 2024 회계연도 매출의 최초값은 37542868390, 최신값은 33725388352로 restated=true입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025 당기 매출은 44835017787입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 2"
+    },
+    {
+     "text": "즉 전기 매출이 이후 보고서에서 바뀌었습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 도구 출력만으로는 이 변경이 주석에 공시된 전기오류수정인지, 중단영업 재분류인지 등 원인을 확인할 수 없어 원인 미확인으로 분류합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원문 공시 주석 확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00896285",
+   "claims": [
+    {
+     "text": "삼양사 2025 사업보고서(연결, rcept_no 20260318001585)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 규칙 16개 중 ok 15, mismatch 1입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 KDQ-0002(현금흐름표 기말현금 = 재무상태표 현금및현금성자산)의 전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "값뿐입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 전기 기말현금 181112509661, 재무상태표 전기 현금및현금성자산 181106791479이고 도구가 보고한 차이값은 5718182입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기는 두 값이 201951426803으로 일치하고, 자산총계 = 부채총계 + 자본총계 규칙(당기 3625448840653 양변 일치)도 정합입니다. dart_explain에서 매각예정자산·매각예정부채의 당기·전기 값은 모두 0이라 매각예정 현금으로 설명되지 않습니다. restatement_checked는 true이지만 원인 후보는 unclassified(공시 원문 확인 전)이며, 도구 출력만으로는 전기 불일치의 원인을 확정할 수 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원문 공시는 확인하지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-00896753",
+   "claims": [
+    {
+     "text": "에코글로우 2025 사업보고서(연결, rcept_no 20260319000929)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 15개 규칙은 정합(ok)이고, 재무상태표 등식은 자산총계 36772737960 = 부채+자본으로 차이 0입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "어긋난 곳은 전기 매출 한 건(KDQ-0006)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "2025년 보고서의 전기 수익은 8448884978이고 2024년 보고서의 당기 수익은 14522098832로, 도구가 보고한 차이는 -6073213854입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구는 이를 중단영업 재분류 추정으로 분류했고(순이익·자산·자본은 불변, 전기 열에 중단영업손익 존재), 계속영업 매출에서 중단영업분이 빠져 전기 매출이 줄어든 것으로 보입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 불일치는 검사에서 나오지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 4
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-01255652",
+   "claims": [
+    {
+     "text": "레이크머티리얼즈 2025 사업보고서(접수번호 20260318001193, 연결)를 dart_check로 검사한 결과 16개 규칙 모두 ok이며 불일치가 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 자산총계 355838236186 = 부채총계+자본총계(차이 0), 전기 351334173536도 동일하게 정합입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 기말현금 20647038915은 재무상태표 현금 20647038915과 일치(차이 0), 전기 20333832101도 일치합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 기말현금 20333832101은 당기 기초현금과 같고, 현금 증감 브리지(당기 313206814, 전기 -15472761208)와 순증감 라벨 검사(당기 391287467, 전기 -15928326520)도 차이 0입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 숫자 재작성 검사(KDQ-0006)도 전기 자산총계 351334173536 등 7개 항목 모두 차이 0으로 변경이 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 어긋나는 곳이 없어 원인 설명이 필요하지 않습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-01354740",
+   "claims": [
+    {
+     "text": "브이씨 2025 사업보고서(연결)는 16개 검사 중 15개가 정합이고 1개가 불일치입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 KDQ-0006(전기 숫자 변경)으로, 현금및현금성자산의 2025년 보고서 전기값은 10776786839인데 2024년 보고서의 당기값은 6776786839이며 도구가 보고한 차이는 4000000000입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원인 후보는 재작성·재분류·연결범위 변경 등 전기 숫자 변경이지만, 이는 API 수치 기반 가설이고 공시 원문(주석)은 확인하지 못했습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 회사가 재작성을 공시했는지 여부는 확정할 수 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-01406618",
+   "claims": [
+    {
+     "text": "비올메디컬 2025 사업보고서(별도재무제표, 접수번호 20260326000710)를 dart_check로 검사한 결과 16개 규칙이 모두 ok였고 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기 자산총계 124560079432 = 부채총계 + 자본총계(diff 0), 전기 98056373990도 diff 0이며, 현금흐름표 기말현금 74572384710은 재무상태표 현금과 일치합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 숫자 재작성 점검(restatement_checked)도 true였고, dart_explain도 불일치 항목이 0건(non_ok_count 0)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 어긋나는 곳이 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-01436558",
+   "claims": [
+    {
+     "text": "신한서부티엔디리츠 2025 사업보고서(연결, rcept_no 20260311004170)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 ok 9건, mismatch 7건.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 모두 KDQ-0006(전기 재작성)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "규칙에서 나왔고, 2025년 보고서의 전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "값이 2024년 보고서의 당기 값과 다르다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계 전기 1099964283931 vs 2024년 당기 968440003900(도구 차이값 131524280031), 부채총계 753253907804 vs 640606751237(차이 112647156567), 자본총계 346710376127 vs 327833252663(차이 18877123464), 현금및현금성자산 22787699396 vs 40405375997(차이 -17617676601), 영업수익 26944754268 vs 18056047809(차이 8888706459), 당기순이익 -593415071 vs 102711",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "차이가 반올림·오타 수준이 아니라 큰 값이며, 한 해 안의 현금흐름표 기말현금과 재무상태표 현금 간 규칙은 불일치로 나오지 않았다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구(dart_explain)는 원인 후보를 '그 외 전기 숫자 변경(재작성·재분류·연결범위 변경 등)'이라는 API 수치 기반 가설로만 제시하며, 공시 원문(주석)은 확인되지 않았다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 전기 숫자가 바뀐 것은 확인되나 회사가 재작성을 공시했는지, 연결범위 변경 등 다른 사유인지는 도구 출력만으로 확인할 수 없다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "d-01703849",
+   "claims": [
+    {
+     "text": "노머스 2025 사업보고서(연결, 접수번호 20260324001029)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "검사 결과 16개 규칙 중 정상 14, 불일치 2입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "불일치는 모두 현금흐름표의 현금 순증감 규칙(KDQ-0004)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기: 공시된 순증감 -868298033 vs 기말-기초 기준 -870048341, 도구가 보고한 차이 1750308.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기: 공시된 순증감 4831339063 vs 기준 4854343594, 도구가 보고한 차이 -23004531.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 등식(KDQ-0001)은 정상이고 재작성 확인(restatement_checked)도 수행됐으나 전기 숫자 변경 불일치로는 나타나지 않았습니다. dart_explain의 원인 후보는 두 건 모두 'unclassified'(해당 가설 없음, API 수치 기반 가설·공시 원문 확인 전)로, 중단영업·매각예정 현금·계정 오태깅·열 밀림 등 어떤 가설에도 해당한다고 확인되지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 어긋남은 존재하지만 원인은 도구 출력만으로 확인할 수 없고, 원문 공시 확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-00120562",
+   "claims": [
+    {
+     "text": "롯데지주 2025 사업보고서(연결, 접수번호 20260316001619)를 dart_check로 검사한 결과 16개 규칙이 모두 ok이고 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 기말현금과 재무상태표 현금및현금성자산 비교 규칙(KDQ-0002, cf_end_vs_bs_cash)의 당기 값은 양쪽 모두 1391651448995원이며 도구가 보고한 차이는 0입니다. dart_explain에서도 불일치 항목(non_ok_count)이 0건입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 두 숫자가 달라 보인다면 단위 표기나 보는 항목의 차이일 가능성이 크고, 공시상 불일치는 확인되지 않습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 4,
+    "calibration": 5
+   },
+   "failure_types": [
+    "missing_fact"
+   ],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함. 필수 사실 일부(359586889, 1227929244)가 답변에 빠짐."
+  },
+  {
+   "case_id": "v-00126937",
+   "claims": [
+    {
+     "text": "삼양홀딩스 2025 연결(CFS)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 기말현금및현금성자산은 288205625422, 재무상태표 현금및현금성자산은 288130686570으로, 도구가 보고한 차이값은 74938852입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기도 300973854613 대 300834307479로 도구가 보고한 차이값이 139547134입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "매각예정 자산 때문이라고는 확인되지 않습니다. dart_explain의 원인 후보는 두 기간 모두 unclassified(위 가설에 해당하지 않음, 공시 원문 확인 전)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "증거로 잡힌 매각예정자산 계정의 BS 금액은 비어 있고, 매각예정자산의 처분(CF)은 전기 75000000 외에는 당기 값이 비어 있어, 매각예정자산집단에 포함된 현금이 기말현금에 들어갔다는 근거는 도구 출력에 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름 브리지(KDQ-0003)도 당기·전기 모두 불일치(차이값 -1118836288, 4221824535)이며 원인 후보는 unclassified입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원인은 API 수치만으로는 확인할 수 없고 공시 원문의 현금흐름표 주석(기말현금 조정 내역)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 4,
+    "calibration": 5
+   },
+   "failure_types": [
+    "missing_fact"
+   ],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함. 필수 사실 일부(KDQ-0002)가 답변에 빠짐."
+  },
+  {
+   "case_id": "v-00128227",
+   "claims": [
+    {
+     "text": "삼정펄프 2025 사업보고서(별도, OFS, rcept_no 20260319000474)에서 전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 기말현금및현금성자산은 11423492931원, 재무상태표 현금및현금성자산은 11423491931원이며, 도구가 보고한 차이값(diff)은 1000원입니다(KDQ-0002).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "같은 1000 차이가 KDQ-0003(cf_bridge, 기말-기초 -9566450884 vs 구성항목 합 -9566451884), KDQ-0004(순증감 공시값 -9566451884 vs -9566450884, diff -1000), KDQ-0005(당기 기초현금 11423491931 vs 전기 기말현금 11423492931, diff -1000)에도 반복됩니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기 기초현금(11423491931)은 재무상태표 값과 일치하므로 전기 CF 기말현금 한 곳의 표기 차이로 보입니다. dart_explain의 원인 후보는 rounding_typo(원 단위 공시에서 차이가 1만 원 이하, 반올림·오타급)이며, 도구가 보고한 차이값이 작습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 이는 API 수치 기반 가설이고 공시 원문 확인 전입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "매각예정자산 현금이나 재작성 근거는 도구 출력에 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-00131832",
+   "claims": [
+    {
+     "text": "SK디스커버리 2025년 보고서(연결, rcept_no 20260317000867)의 전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "숫자가 2024년 보고서의 당기 숫자와 다릅니다. dart_check는 KDQ-0006 불일치 4건을 보고했습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계: 2025년 보고서의 전기 15142281241732, 2024년 보고서 당기 15077692130416, 도구가 준 차이 64589111316.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "부채총계: 8639257973247 vs 8624337888533, 차이 14920084714.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자본총계: 6503023268485 vs 6453354241883, 차이 49669026602.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기순이익도 47105088426 vs 31919087418, 차이 15186001008로 달라졌습니다. dart_explain은 원인 후보를 '그 외 전기 숫자 변경(재작성·재분류·연결범위 변경 등)'으로만 제시하며, 이는 API 수치 기반 가설이고 공시 원문 확인 전이라고 명시합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "즉 전기 숫자가 바뀐 것은 확인되지만, 회사가 주석으로 재작성을 공시했는지, 재분류인지, 연결범위 변경인지는 도구 출력만으로 확인되지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원문 주석(전기오류수정, 회계정책 변경, 중단영업 등)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 2,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [
+    "wrong_cause"
+   ],
+   "diagnosis": "기대 원인은 restatement_disclosed이나 답변은 unexplained로 결론; 도구 출력만으로 공시 여부를 확정하지 않은 점은 정직하나 기대와 불일치."
+  },
+  {
+   "case_id": "v-00153126",
+   "claims": [
+    {
+     "text": "크라운해태홀딩스 2025 사업보고서(연결, 접수번호 20260318000921)를 dart_check로 검사한 결과 restatement_checked=true이고 16개 규칙 모두 ok(불일치 없음)입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기(frmtrm)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계 1180815137965는 부채총계+자본총계와 일치합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "매출액(revenue)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "이력에서도 2024 회계연도 최초값 1046896219641과 2025 보고서의 최신값 1046896219641이 같고 restated=false, diff=0입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 작년 보고서 대비 달라진 전기 수치는 확인되지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 이는 OpenDART API 수치 기준이며 원문 공시를 직접 확인한 것은 아닙니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-00413046",
+   "claims": [
+    {
+     "text": "셀트리온 2025 사업보고서(연결, 접수번호 20260316001415)를 dart_check로 검사한 결과 16개 규칙 모두 ok이고 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "예: 자산총계=부채총계+자본총계가 당기 22334900189800, 전기 21055222437706으로 차이 0이며, 현금흐름표 기말현금과 재무상태표 현금 규칙(KDQ-0002)도 당기 값 1119206211717로 정합입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 재작성 여부도 확인(restatement_checked: true)했으나 이상 징후는 없었습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "이상한 점은 발견되지 않았습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-00609324",
+   "claims": [
+    {
+     "text": "뷰웍스 2025 사업보고서(연결, 접수번호 20260323001685)에 dart_check를 돌린 결과 검사 16건이 모두 ok이고 불일치는 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "재무상태표 등식은 당기(자산총계 351892269253 = 부채총계+자본총계)와 전기(322894937480 = 부채총계+자본총계)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "모두 차이 0입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "현금흐름표 기말현금과 재무상태표 현금도 당기에 29558179054로 일치합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 재작성 여부도 검사했고(restatement_checked: true)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "문제로 보고된 항목은 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-00791209",
+   "claims": [
+    {
+     "text": "예, 전기 숫자가 달라진 것은 맞습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 회사가 공시한 재작성이라고 확인된 것은 아닙니다. dart_check(메타케어 2025 사업보고서, 접수번호 20260317000732, 연결)에서 KDQ-0006 전기 대사 불일치가 3건 나왔습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산총계는 2025년 보고서의 전기값 157820076744, 2024년 보고서의 당기값 156696839751이며 도구가 보고한 차이는 1123236993입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자본총계는 전기값 116798139381, 작년 당기값 115674902388이고 차이는 1123236993입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기순이익은 전기값 7593409776, 작년 당기값 8373425949이고 차이는 -780016173입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "부채총계, 현금, 매출, 영업현금흐름의 전기값은 작년 보고서와 일치했습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "자산과 자본의 차이가 같고 대차평형(KDQ-0001)은 전기·당기 모두 정합하므로, 전기 재무제표가 수정 반영된 것으로 보입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "그러나 dart_explain의 원인 후보는 '전기 숫자 변경(재작성·재분류·연결범위 변경 등)'이라는 API 수치 기반 가설일 뿐이고 공시 원문 확인 전입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "주석의 전기오류수정 등 공시 여부는 도구로 확인되지 않았으므로 원문 주석 확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-01311286",
+   "claims": [
+    {
+     "text": "열 밀림이 아닙니다. dart_check(퀀타매트릭스 2025, 연결)에서 16개 검사가 모두 ok이고 dart_explain의 불일치 항목도 0건입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기 기말현금은 38541079218(KDQ-0002, 재무상태표 현금및현금성자산과 동일)이고, 공시된 현금 순증감은 32147940480(KDQ-0004, diff 0)으로 서로 다른 값입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "따라서 순증감 칸에 기말현금이 들어간 것이 아닙니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "기초현금은 6111533862로 전기 기말현금과 일치합니다(KDQ-0005).",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "브리지 검사(KDQ-0003)는 환율변동효과 281604876를 포함해 lhs 32429545356 = rhs 32429545356, diff 0으로 정합입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "전기 순증감은 -961309643으로 이 역시 정합입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "즉 열이 밀리지 않았고 숫자는 서로 맞습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-01316236",
+   "claims": [
+    {
+     "text": "dart_check(KDQ-0006, 전기 매출 재작성 검사)에서 2025년 보고서의 전기 매출액은 2452219662527원인데, 2024년 보고서의 당기 매출액은 2838188216213원으로 도구가 보고한 차이값은 -385968553686원입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "도구는 이를 '중단영업 재분류 추정'(status: reclassified)으로 판단했습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "순이익·자산·자본은 바뀌지 않았고 전기 열에 중단영업손익이 있어, 중단영업 부문의 매출이 전기 계속영업 매출에서 빠진 것으로 보입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "나머지 15개 규칙은 ok입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "다만 이는 OpenDART API 수치 기반의 추정이며 원문 공시 주석으로 확인한 것은 아닙니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  },
+  {
+   "case_id": "v-01534577",
+   "claims": [
+    {
+     "text": "청담글로벌 2025 사업보고서(연결, rcept_no 20260323001562)의 KDQ-0005(당기 기초현금 = 전기 기말현금)",
+     "label": "grounded",
+     "evidence_ref": "line 2"
+    },
+    {
+     "text": "규칙이 불일치로 나왔습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "당기 기초현금은 13515501095, 전기 기말현금은 16615501095이고 도구가 보고한 차이값은 -3100000000입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 2"
+    },
+    {
+     "text": "다만 dart_explain의 원인 후보는 '위 가설에 해당하지 않음(unclassified)'이며, 기초현금 계정 이력(dart_history)에서도 재작성(restated)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "표시가 없습니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "중단영업, 매각예정 현금, 오타 등 어느 원인인지 도구 출력만으로는 확인되지 않았고, 공시 원문 확인 전의 API 수치 기반 결과입니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "원인은 확인 불가로 원문(현금흐름표 주석)",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    },
+    {
+     "text": "확인이 필요합니다.",
+     "label": "grounded",
+     "evidence_ref": "line 1"
+    }
+   ],
+   "rubric": {
+    "correctness": 5,
+    "grounding": 5,
+    "calibration": 5
+   },
+   "failure_types": [],
+   "diagnosis": "답변의 결론과 수치가 도구 로그와 일치하며 근거 수준을 api_only로 적절히 표기함."
+  }
+ ]
+}

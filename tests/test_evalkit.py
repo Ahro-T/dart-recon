@@ -1,4 +1,6 @@
 import json
+import math
+import statistics
 import tempfile
 import unittest
 from pathlib import Path
@@ -67,6 +69,17 @@ class Grounding(unittest.TestCase):
     def test_numbers_inside_detail_strings_grounded(self):
         recs = [{"result": {"detail": "사용: 매각예정자산집단에 포함된 현금=359586889"}}]
         self.assertEqual(evalkit.hallucinated_amounts("현금 359,586,889원", recs), [])
+
+    def test_unit_notation_inside_tool_strings_grounded(self):
+        recs = [{"result": {"hypotheses": [{"cause": "rounding_typo", "why": "원 단위 공시에서 차이가 1만 원 이하(반올림·오타급)"}]}}]
+        self.assertEqual(evalkit.hallucinated_amounts("도구 가설은 차이가 1만 원 이하라는 것", recs), [])
+        self.assertEqual(evalkit.hallucinated_amounts("차이가 2만 원", recs), ["2만"])
+
+    def test_man_particle_after_full_won_amount(self):
+        recs = [{"result": {"frmtrm_amount": "75000000"}}]
+        self.assertEqual(evalkit.hallucinated_amounts("전기 75000000만 있고 당기는 비어 있습니다", recs), [])
+        self.assertEqual(evalkit.hallucinated_amounts("전기 76000000만 있고", recs), ["76000000"])
+        self.assertEqual(evalkit.hallucinated_amounts("약 7500만 원", recs), [])
 
     def test_no_tool_calls_means_everything_ungrounded(self):
         self.assertEqual(evalkit.hallucinated_amounts("1,000원", []), ["1000"])
@@ -145,14 +158,16 @@ class TmpRoot(unittest.TestCase):
              "required_facts": ["KDQ-0006"], "forbidden": [], "split": "train", "protected": False},
             {"id": "h1", "question": "h-secret-question", "corp": "C", "year": 2025, "expected_cause": "none", "expected_basis": "api_only",
              "required_facts": ["KDQ-0001"], "forbidden": [], "split": "heldout", "protected": False},
+            {"id": "x1", "question": "x-test-question", "corp": "D", "year": 2025, "expected_cause": "restatement_disclosed", "expected_basis": "api_only",
+             "accepted_causes": ["restatement_disclosed", "unexplained"], "required_facts": ["KDQ-0006"], "forbidden": [], "split": "test", "protected": False},
         ]
         (self.root / "eval" / "cases.jsonl").write_text("\n".join(json.dumps(c, ensure_ascii=False) for c in self.cases) + "\n", encoding="utf-8")
         sk = self.root / "skills" / "dart-recon"
         sk.mkdir(parents=True)
         (sk / "SKILL.v0.md").write_text("SKILL V0 TEXT", encoding="utf-8")
 
-    def write_answer(self, rnd, skill, cid, text, cause="none", basis="api_only", tools=None):
-        d = evalkit.run_dir(rnd, skill)
+    def write_answer(self, rnd, skill, cid, text, cause="none", basis="api_only", tools=None, rep=1):
+        d = evalkit.rep_dir(rnd, skill, rep)
         d.mkdir(parents=True, exist_ok=True)
         (d / f"{cid}.answer.json").write_text(json.dumps({"case_id": cid, "answer": text, "cause": cause, "basis": basis}, ensure_ascii=False), encoding="utf-8")
         if tools is not None:
@@ -161,16 +176,18 @@ class TmpRoot(unittest.TestCase):
 
 class Run(TmpRoot):
     def test_prompt_contains_skill_question_and_paths_but_no_expectations(self):
-        p = evalkit.analyst_prompt("t1", "v0", 3)
-        for s in ("SKILL V0 TEXT", "q1", "--round 3 --skill v0 --case t1", "results/loop/runs/r3/v0/t1.answer.json", "unexplained"):
+        p = evalkit.analyst_prompt("t1", "v0", 3, 2)
+        for s in ("SKILL V0 TEXT", "q1", "--round 3 --skill v0 --rep 2 --case t1", "results/loop/runs/r3/v0/k2/t1.answer.json", "unexplained"):
             self.assertIn(s, p)
         self.assertNotIn("KDQ-0001", p)
+        with self.assertRaises(SystemExit):
+            evalkit.analyst_prompt("t1", "v0", 3, 0)
 
     def test_tool_runner_logs_with_fixture_cache(self):
         with mock.patch.object(client, "CACHE", FIXTURES):
-            out = evalkit.run_tool(0, "v0", "t1", "dart_check", {"corp": "켐트로닉스", "year": 2025})
-            evalkit.run_tool(0, "v0", "t1", "dart_check", {"corp": "없는회사", "year": 2025})
-        recs = evalkit.read_jsonl(evalkit.run_dir(0, "v0") / "t1.tools.jsonl")
+            out = evalkit.run_tool(0, "v0", "t1", "dart_check", {"corp": "켐트로닉스", "year": 2025}, 2)
+            evalkit.run_tool(0, "v0", "t1", "dart_check", {"corp": "없는회사", "year": 2025}, 2)
+        recs = evalkit.read_jsonl(evalkit.rep_dir(0, "v0", 2) / "t1.tools.jsonl")
         self.assertEqual(len(recs), 2)
         self.assertEqual(recs[0]["tool"], "dart_check")
         self.assertEqual(recs[0]["result"], json.loads(out))
@@ -178,9 +195,9 @@ class Run(TmpRoot):
 
     def test_tool_runner_rejects_unknown_tool_and_bad_ids(self):
         with self.assertRaises(SystemExit):
-            evalkit.run_tool(0, "v0", "t1", "rm", {})
+            evalkit.run_tool(0, "v0", "t1", "rm", {}, 1)
         with self.assertRaises(SystemExit):
-            evalkit.run_tool(0, "v0", "../x", "dart_rules", {})
+            evalkit.run_tool(0, "v0", "../x", "dart_rules", {}, 1)
 
     def test_score_run_writes_scores_and_missing_counts_zero(self):
         self.write_answer(0, "v0", "t1", "KDQ-0001 정합", tools=[])
@@ -189,7 +206,113 @@ class Run(TmpRoot):
         self.assertTrue(res["cases"]["t2"]["missing_answer"])
         self.assertEqual(res["aggregates"]["train"]["n"], 2)
         self.assertEqual(res["aggregates"]["train"]["mean_score"], 0.5)
+        self.assertEqual((res["k"], res["splits"], res["cases"]["t1"]["k"], res["cases"]["t1"]["sd"]), (1, ["train", "heldout"], 1, None))
         self.assertTrue((evalkit.run_dir(0, "v0") / "scores.json").exists())
+
+
+class Reps(TmpRoot):
+    def answers(self, skill, per_rep):
+        """per_rep: {rep: {cid: (text, cause)}}"""
+        for j, cases in per_rep.items():
+            for cid, (text, cause) in cases.items():
+                self.write_answer(0, skill, cid, text, cause=cause, tools=[], rep=j)
+
+    def test_score_all_reps_with_sd_se_and_missing_rep_is_zero(self):
+        self.answers("v0", {1: {"t1": ("KDQ-0001", "none"), "t2": ("KDQ-0006", "unexplained")},
+                            2: {"t1": ("KDQ-0001", "unexplained")},  # t1 원인 오답, t2 답변 없음
+                            3: {"t1": ("KDQ-0001", "none"), "t2": ("KDQ-0006", "unexplained")}})
+        res = evalkit.score_run(0, "v0")
+        t1, t2 = res["cases"]["t1"], res["cases"]["t2"]
+        self.assertEqual((res["k"], t1["k"]), (3, 3))
+        self.assertEqual([t1["reps"][j]["score"] for j in "123"], [1.0, round(2 / 3, 4), 1.0])
+        self.assertEqual([t2["reps"][j]["score"] for j in "123"], [1.0, 0.0, 1.0])  # rep 2에 답변 없음 -> 그 rep만 0점
+        self.assertTrue(t2["reps"]["2"]["missing_answer"] and not t2["missing_answer"])
+        self.assertAlmostEqual(t1["score"], statistics.mean([1.0, round(2 / 3, 4), 1.0]), places=4)
+        self.assertAlmostEqual(t1["sd"], statistics.stdev([1.0, round(2 / 3, 4), 1.0]), places=4)
+        agg = res["aggregates"]["train"]
+        self.assertEqual(agg["n"], 2)
+        self.assertAlmostEqual(agg["se"], math.sqrt(sum(statistics.variance(c) / 3 for c in ([1.0, round(2 / 3, 4), 1.0], [1.0, 0.0, 1.0]))) / 2, places=4)
+        self.assertAlmostEqual(agg["mean_score"], (t1["score"] + t2["score"]) / 2, places=3)
+
+    def test_single_rep_has_null_sd_and_se(self):
+        self.answers("v0", {1: {"t1": ("KDQ-0001", "none")}})
+        res = evalkit.score_run(0, "v0")
+        self.assertEqual((res["cases"]["t1"]["sd"], res["aggregates"]["train"]["se"]), (None, None))
+
+    def test_hallucinations_summed_over_reps(self):
+        for j in (1, 2):
+            self.write_answer(0, "v0", "t1", "KDQ-0001 합계 9,999,999원", tools=[], rep=j)
+        res = evalkit.score_run(0, "v0")
+        self.assertEqual(res["aggregates"]["all"]["hallucinated_amounts"], 2)
+        self.assertEqual(res["cases"]["t1"]["score"], 0.0)
+
+    def test_legacy_run_without_k_dirs_is_refused_and_untouched(self):
+        d = evalkit.run_dir(0, "v0")
+        d.mkdir(parents=True)
+        (d / "t1.answer.json").write_text(json.dumps({"case_id": "t1", "answer": "x", "cause": "none", "basis": "api_only"}), encoding="utf-8")
+        (d / "scores.json").write_text('{"legacy": true}', encoding="utf-8")
+        with self.assertRaises(SystemExit):
+            evalkit.score_run(0, "v0")
+        self.assertEqual((d / "scores.json").read_text(), '{"legacy": true}')
+
+    def test_test_split_scored_only_on_request_and_merged(self):
+        self.answers("v0", {1: {"t1": ("KDQ-0001", "none"), "x1": ("KDQ-0006", "unexplained")}})
+        res = evalkit.score_run(0, "v0")
+        self.assertNotIn("x1", res["cases"])  # 미채점 test는 0점으로 들어가지 않는다
+        self.assertNotIn("test", res["aggregates"])
+        self.assertEqual(res["splits"], ["train", "heldout"])
+        res = evalkit.score_run(0, "v0", ("test",))
+        self.assertEqual(set(res["cases"]), {"t1", "t2", "h1", "x1"})  # train/heldout 점수는 보존
+        self.assertEqual(res["cases"]["t1"]["score"], 1.0)
+        self.assertEqual((res["splits"], res["aggregates"]["test"]["n"]), (["train", "heldout", "test"], 1))
+        with self.assertRaises(SystemExit):
+            evalkit.score_run(0, "v0", ("dev",))
+
+    def test_accepted_causes(self):
+        case = {**CASE, "expected_cause": "restatement_disclosed", "accepted_causes": ["restatement_disclosed", "unexplained"]}
+        a = lambda cause: {"case_id": "c1", "answer": "KDQ-0006 1,000원", "cause": cause, "basis": "api_only"}
+        self.assertEqual(evalkit.score_case(case, a("unexplained"), TOOLS)["cause_match"], 1)
+        self.assertEqual(evalkit.score_case(case, a("restatement_disclosed"), TOOLS)["cause_match"], 1)
+        self.assertEqual(evalkit.score_case(case, a("none"), TOOLS)["cause_match"], 0)
+        plain = {**CASE, "expected_cause": "restatement_disclosed"}
+        self.assertEqual(evalkit.score_case(plain, a("unexplained"), TOOLS)["cause_match"], 0)
+
+    def test_judge_prompt_uses_rep_and_scored_cases_only(self):
+        self.answers("v0", {1: {"t1": ("rep1 text", "none")}, 2: {"t1": ("rep2 text", "none")}})
+        evalkit.score_run(0, "v0")
+        p = evalkit.judge_prompt(0, "v0", 2)
+        self.assertIn("rep2 text", p)
+        self.assertNotIn("rep1 text", p)
+        self.assertIn("v0/k2/judge.json", p)
+        self.assertNotIn("x1", p)  # test 분할 미채점
+
+    def test_noise_summary(self):
+        self.answers("v0", {1: {"t1": ("KDQ-0001", "none")}, 2: {"t1": ("KDQ-0001", "unexplained")}})
+        evalkit.score_run(0, "v0")
+        n = evalkit.noise_summary(0, "v0")
+        self.assertEqual(n["k"], 2)
+        self.assertEqual(n["splits"]["train"]["rep_means"], {"1": 0.5, "2": 0.3333})
+        self.assertEqual(n["top_case_sd"][0]["case_id"], "t1")
+        self.assertTrue((evalkit.run_dir(0, "v0") / "noise.json").exists())
+        self.answers("v1", {1: {"t1": ("KDQ-0001", "none")}})
+        evalkit.score_run(0, "v1")
+        with self.assertRaises(SystemExit):
+            evalkit.noise_summary(0, "v1")  # k<2
+
+
+class CaseSchema(unittest.TestCase):
+    GOOD = {"id": "a-1", "question": "q", "corp": "A", "year": 2025, "expected_cause": "none", "expected_basis": "api_only",
+            "required_facts": ["KDQ-0001"], "forbidden": ["x+"], "split": "train", "protected": False, "tier": "derived"}
+
+    def test_good_and_accepted_causes(self):
+        self.assertEqual(evalkit.case_errors(self.GOOD), [])
+        self.assertEqual(evalkit.case_errors({**self.GOOD, "expected_cause": "restatement_disclosed", "accepted_causes": ["restatement_disclosed", "unexplained"]}), [])
+
+    def test_bad_variants(self):
+        for patch in ({"tier": "x"}, {"split": "dev"}, {"accepted_causes": ["unexplained"]}, {"accepted_causes": ["none", "bogus"]},
+                      {"forbidden": ["("]}, {"required_facts": []}, {"expected_cause": "bogus"}, {"protected": True, "split": "heldout"}):
+            self.assertTrue(evalkit.case_errors({**self.GOOD, **patch}), patch)
+        self.assertTrue(evalkit.case_errors({k: v for k, v in self.GOOD.items() if k != "tier"}))
 
 
 def good_judge(rnd=0, skill="v0", ids=("t1", "t2", "h1"), label="grounded", correctness=5):
@@ -226,11 +349,11 @@ class JudgeSchema(TmpRoot):
         d = good_judge(ids=("t1", "t2", "h1"))
         d["cases"][0]["claims"][0]["label"] = "hallucinated"
         d["cases"][1]["rubric"]["correctness"] = 2
-        jp = evalkit.run_dir(0, "v0") / "judge.json"
+        jp = evalkit.rep_dir(0, "v0", 1) / "judge.json"
         jp.write_text(json.dumps(d), encoding="utf-8")
         res = evalkit.judge_validate(0, "v0")
         self.assertTrue(res["valid"], res)
-        ag = json.loads((evalkit.run_dir(0, "v0") / "agreement.json").read_text())
+        ag = json.loads((evalkit.rep_dir(0, "v0", 1) / "agreement.json").read_text())
         rows = {r["case_id"]: r for r in ag["cases"]}
         self.assertTrue(rows["t1"]["hallucination_agree"])
         self.assertTrue(rows["t2"]["correctness_agree"])  # 판정 정확도 낮음 vs cause_match 0
@@ -240,7 +363,7 @@ class JudgeSchema(TmpRoot):
     def test_validate_command_rejects_unknown_or_missing_case(self):
         self.write_answer(0, "v0", "t1", "KDQ-0001", tools=[])
         evalkit.score_run(0, "v0")
-        jp = evalkit.run_dir(0, "v0") / "judge.json"
+        jp = evalkit.rep_dir(0, "v0", 1) / "judge.json"
         jp.write_text(json.dumps(good_judge(ids=("t1", "zzz"))), encoding="utf-8")
         res = evalkit.judge_validate(0, "v0")
         self.assertFalse(res["valid"])
@@ -249,15 +372,23 @@ class JudgeSchema(TmpRoot):
         self.assertFalse(evalkit.judge_validate(0, "v0")["valid"])
 
 
-def mk_scores(rnd, skill, train, heldout_score, hall=0, protected_score=1.0):
-    """train: {id: score}; t1 보호 케이스."""
-    cases = {}
-    for cid, sc in train.items():
-        cases[cid] = {"split": "train", "protected": cid == "t1", "missing_answer": False, "cause_match": 1, "facts_recall": 1.0, "missing_facts": [],
-                      "basis_ok": 1, "hallucinated_amounts": [], "forbidden_hits": [], "score": sc}
-    cases["h1"] = {"split": "heldout", "protected": False, "missing_answer": False, "cause_match": 1, "facts_recall": 1.0, "missing_facts": [],
-                   "basis_ok": 1, "hallucinated_amounts": ["1"] * hall, "forbidden_hits": [], "score": heldout_score}
-    return {"round": rnd, "skill": skill, "cases": cases, "aggregates": evalkit.aggregate(cases)}
+def rep_result(split, protected, score, hall=0):
+    return {"split": split, "protected": protected, "missing_answer": False, "cause_match": 1, "facts_recall": 1.0, "missing_facts": [],
+            "basis_ok": 1, "hallucinated_amounts": ["1"] * hall, "forbidden_hits": [], "score": score}
+
+
+def mk_case(split, protected, scores, hall=0):
+    """scores: 숫자(같은 점수 3회 반복) 또는 rep별 점수 목록."""
+    scores = scores if isinstance(scores, list) else [scores] * 3
+    return evalkit.combine_reps({j + 1: rep_result(split, protected, sc, hall if j == 0 else 0) for j, sc in enumerate(scores)})
+
+
+def mk_scores(rnd, skill, train, heldout_score, hall=0, protected_ids=("t1",), splits=("train", "heldout")):
+    """train: {id: score|[scores]}; t1 보호 케이스, h1 홀드아웃."""
+    cases = {cid: mk_case("train", cid in protected_ids, sc) for cid, sc in train.items()}
+    cases["h1"] = mk_case("heldout", False, heldout_score, hall)
+    k = max(len(evalkit.rep_scores(c)) for c in cases.values())
+    return {"round": rnd, "skill": skill, "k": k, "splits": list(splits), "cases": cases, "aggregates": evalkit.aggregate(cases)}
 
 
 class Gate(TmpRoot):
@@ -289,6 +420,9 @@ class Gate(TmpRoot):
         self.assertEqual(len(rec), 1)
         self.assertTrue(rec[0]["adopted"])
         self.assertEqual(set(rec[0]["gates"]), {"G1", "G2", "G3", "G4"})
+        g1 = rec[0]["gates"]["G1"]
+        self.assertEqual((g1["D"], g1["SE"], g1["n"], g1["k"]), (0.6, 0.0, 1, 3))
+        self.assertEqual(rec[0]["splits"], ["train", "heldout"])
 
     def check_rejected(self, cand, expect, **kw):
         self.setup_round(self.BASE(), cand, **kw)
@@ -327,6 +461,63 @@ class Gate(TmpRoot):
         self.gate()
         self.assertEqual(len(evalkit.read_jsonl(evalkit.ledger_path())), 2)
 
+    def test_g1_difference_inside_noise_fails_and_outside_passes(self):
+        base = mk_scores(1, "v0", {"t1": 1.0, "t2": [0.1, 0.5, 0.9]}, 0.5)
+        self.setup_round(base, mk_scores(1, "v1", {"t1": 1.0, "t2": [0.2, 0.6, 1.0]}, 0.5))  # d=0.1, se=sqrt(0.16/3*2)=0.327
+        line, _ = self.gate()
+        self.assertEqual(line, "round=1 candidates=1 adopted=0 failed_gates=G1_targeted")
+        rec = evalkit.read_jsonl(evalkit.ledger_path())[0]["gates"]["G1"]
+        self.assertAlmostEqual(rec["D"], 0.1, places=4)
+        self.assertAlmostEqual(rec["SE"], 0.3266, places=4)
+        (self.root / "skills" / "dart-recon" / "candidates" / "v1.md").write_text("x")
+        self.setup_round(mk_scores(1, "v0", {"t1": 1.0, "t2": 0.3}, 0.5), mk_scores(1, "v1", {"t1": 1.0, "t2": [0.8, 0.9, 1.0]}, 0.5))
+        line, _ = self.gate()
+        self.assertEqual(line, "round=1 candidates=1 adopted=1 failed_gates=none")
+
+    def test_g2_protected_zero_se_small_drop_fails_but_drop_inside_band_passes(self):
+        self.setup_round(self.BASE(), mk_scores(1, "v1", {"t1": 0.99, "t2": 0.9}, 0.5))  # se_c=0 -> d_c>=0 필요
+        line, _ = self.gate()
+        self.assertEqual(line, "round=1 candidates=1 adopted=0 failed_gates=G2_protected")
+        base = mk_scores(1, "v0", {"t1": [1.0, 0.8, 0.9], "t2": 0.3}, 0.5)
+        self.setup_round(base, mk_scores(1, "v1", {"t1": [0.95, 0.75, 0.85], "t2": 0.9}, 0.5))  # d=-0.05, se=0.0816
+        line, _ = self.gate()
+        self.assertEqual(line, "round=1 candidates=1 adopted=1 failed_gates=none")
+        (self.root / "skills" / "dart-recon" / "SKILL.v1.md").unlink()
+        self.setup_round(base, mk_scores(1, "v1", {"t1": [0.9, 0.7, 0.8], "t2": 0.9}, 0.5))  # d=-0.1 < -se
+        line, _ = self.gate()
+        self.assertEqual(line, "round=1 candidates=1 adopted=0 failed_gates=G2_protected")
+
+    def test_g4_heldout_inside_band_passes(self):
+        base = mk_scores(1, "v0", {"t1": 1.0, "t2": 0.3}, [0.2, 0.6, 1.0])
+        self.setup_round(base, mk_scores(1, "v1", {"t1": 1.0, "t2": 0.9}, [0.1, 0.5, 0.9]))  # d=-0.1 > -0.327
+        self.assertEqual(self.gate()[0], "round=1 candidates=1 adopted=1 failed_gates=none")
+
+    def test_k_below_two_is_refused_without_ledger(self):
+        for base, cand in ((mk_scores(1, "v0", {"t1": [1.0], "t2": [0.3]}, 0.5), mk_scores(1, "v1", {"t1": 1.0, "t2": 0.9}, 0.5)),
+                           (mk_scores(1, "v0", {"t1": 1.0, "t2": 0.3}, 0.5), mk_scores(1, "v1", {"t1": 1.0, "t2": 0.9}, [0.5]))):
+            self.setup_round(base, cand)
+            with self.assertRaises(SystemExit):
+                self.gate()
+        self.assertEqual(evalkit.read_jsonl(evalkit.ledger_path()), [])
+
+    def test_splits_must_match_and_legacy_scores_refused(self):
+        self.setup_round(self.BASE(), mk_scores(1, "v1", {"t1": 1.0, "t2": 0.9}, 0.5, splits=("train", "heldout", "test")))
+        with self.assertRaises(SystemExit):
+            self.gate()
+        legacy = {"round": 1, "skill": "v1", "cases": {c: {k: v for k, v in s.items() if k not in ("reps", "k", "sd")} for c, s in self.BASE()["cases"].items()},
+                  "aggregates": self.BASE()["aggregates"]}
+        self.setup_round(self.BASE(), legacy)
+        with self.assertRaises(SystemExit):
+            self.gate()
+
+    def test_test_split_cases_are_ignored_by_gates(self):
+        cand = mk_scores(1, "v1", {"t1": 1.0, "t2": 0.9}, 0.5, splits=("train", "heldout", "test"))
+        base = mk_scores(1, "v0", {"t1": 1.0, "t2": 0.3}, 0.5, splits=("train", "heldout", "test"))
+        for sc in (base, cand):
+            sc["cases"]["x1"] = mk_case("test", False, 0.0, hall=1 if sc is cand else 0)
+        self.setup_round(base, cand)
+        self.assertEqual(self.gate()[0], "round=1 candidates=1 adopted=1 failed_gates=none")  # test의 환각은 G3에 들어가지 않는다
+
     def test_case_set_mismatch_is_error(self):
         b = self.BASE()
         c = mk_scores(1, "v1", {"t1": 1.0}, 0.5)
@@ -342,8 +533,14 @@ class ImproveAndReport(Gate):
         (evalkit.run_dir(0, "v0") / "scores.json").write_text(json.dumps(s), encoding="utf-8")
         (self.root / "lessons").mkdir()
         (self.root / "lessons" / "r0-v1.md").write_text("LESSON BODY", encoding="utf-8")
+        s["cases"]["t2"] = mk_case("train", False, [0.5, 0.1, 0.3])
+        s["aggregates"] = evalkit.aggregate(s["cases"])
+        (evalkit.run_dir(0, "v0") / "scores.json").write_text(json.dumps(s), encoding="utf-8")
+        self.write_answer(0, "v0", "t2", "low answer", rep=2)
         p = evalkit.improve_prompt(0, "v0")
         self.assertIn("### t2", p)
+        self.assertIn("k1=0.5, k2=0.1, k3=0.3", p)
+        self.assertIn("v0/k2/t2.answer.json", p)  # 가장 낮은 rep의 답변 경로
         self.assertNotIn("### t1", p)  # 만점 케이스는 실패 목록에 없다
         self.assertIn("t1: 현재 점수 1.0", p)  # 보호 케이스로는 표시
         self.assertIn("LESSON BODY", p)
@@ -372,6 +569,27 @@ class ImproveAndReport(Gate):
         self.assertTrue((self.root / "results" / "loop" / "summary.json").exists())
 
 
+class LegacyReport(TmpRoot):
+    def test_report_reads_legacy_and_new_runs_together(self):
+        legacy_cases = {"t1": {**rep_result("train", True, 1.0)}, "h1": {**rep_result("heldout", False, 0.5)}}
+        legacy = {"round": 0, "skill": "v0", "cases": legacy_cases, "aggregates": evalkit.aggregate(legacy_cases)}
+        evalkit.run_dir(0, "v0").mkdir(parents=True)
+        (evalkit.run_dir(0, "v0") / "scores.json").write_text(json.dumps(legacy), encoding="utf-8")
+        evalkit.ledger_path().parent.mkdir(parents=True, exist_ok=True)
+        evalkit.ledger_path().write_text(json.dumps({"round": 0, "candidate": "v1", "adopted": False, "failed_gates": ["G1_targeted"],
+                                                     "gates": {"G1": {"pass": False, "detail": "old"}}}) + "\n", encoding="utf-8")
+        new = mk_scores(1, "v0", {"t1": 1.0, "t2": 0.5}, 0.5)
+        evalkit.run_dir(1, "v0").mkdir(parents=True)
+        (evalkit.run_dir(1, "v0") / "scores.json").write_text(json.dumps(new), encoding="utf-8")
+        rep = evalkit.build_report()
+        self.assertEqual([(r["round"], r["k"], r["cases"], r["legacy"]) for r in rep["rows"]], [(0, 1, 2, True), (1, 3, 3, False)])
+        evalkit.write_report()
+        md = (self.root / "results" / "loop" / "summary.md").read_text(encoding="utf-8")
+        self.assertIn("| 0 | v0 | 1 | 2 | legacy |", md)
+        self.assertIn("| 1 | v0 | 3 | 3 |  |", md)
+        self.assertEqual(rep["rejected"], 1)
+
+
 class RepoCases(unittest.TestCase):
     """저장소의 실제 eval/cases.jsonl 구조 점검(데이터 캐시는 쓰지 않는다)."""
 
@@ -380,16 +598,15 @@ class RepoCases(unittest.TestCase):
         ids = [c["id"] for c in cases]
         self.assertEqual(len(ids), len(set(ids)))
         for c in cases:
-            self.assertEqual(set(c), {"id", "question", "corp", "year", "expected_cause", "expected_basis", "required_facts", "forbidden", "split", "protected"})
-            self.assertIn(c["expected_cause"], evalkit.TAXONOMY)
-            self.assertIn(c["expected_basis"], ("original_checked", "api_only"))
-            self.assertIn(c["split"], ("train", "heldout"))
-            self.assertTrue(c["required_facts"])
-            for pat in c["forbidden"]:
-                __import__("re").compile(pat)
-            if c["protected"]:
-                self.assertEqual(c["split"], "train")
-        self.assertTrue(10 <= len(cases) <= 12)
+            self.assertEqual(evalkit.case_errors(c), [], c["id"])
+        verified = [c for c in cases if c["tier"] == "verified"]
+        derived = [c for c in cases if c["tier"] == "derived"]
+        self.assertEqual(len(verified), 11)
+        self.assertTrue(30 <= len(derived) <= 40)
+        self.assertTrue(30 <= len(cases) <= 50)
+        self.assertEqual({c["split"] for c in cases}, {"train", "heldout", "test"})
+        self.assertTrue(all(c["split"] != "test" for c in verified))
+        self.assertEqual(len({c["corp"] for c in cases}), len(cases))  # 회사 중복 없음
 
 
 if __name__ == "__main__":

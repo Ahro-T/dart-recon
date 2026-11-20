@@ -3,6 +3,9 @@
     {
       "round": 0,
       "skill": "v0",
+      "k": 1,
+      "cases": 11,
+      "legacy": true,
       "train_mean": 0.8333,
       "train_n": 7,
       "heldout_mean": 0.8611,
@@ -14,6 +17,9 @@
     {
       "round": 0,
       "skill": "v1",
+      "k": 1,
+      "cases": 11,
+      "legacy": true,
       "train_mean": 0.8095,
       "train_n": 7,
       "heldout_mean": 1.0,
@@ -25,6 +31,9 @@
     {
       "round": 1,
       "skill": "v0",
+      "k": 1,
+      "cases": 11,
+      "legacy": true,
       "train_mean": 0.8492,
       "train_n": 7,
       "heldout_mean": 0.8611,
@@ -36,6 +45,9 @@
     {
       "round": 1,
       "skill": "v2",
+      "k": 1,
+      "cases": 11,
+      "legacy": true,
       "train_mean": 0.9286,
       "train_n": 7,
       "heldout_mean": 0.7083,
@@ -47,6 +59,9 @@
     {
       "round": 2,
       "skill": "v0",
+      "k": 1,
+      "cases": 11,
+      "legacy": true,
       "train_mean": 0.8651,
       "train_n": 7,
       "heldout_mean": 0.9305,
@@ -58,6 +73,9 @@
     {
       "round": 2,
       "skill": "v3",
+      "k": 1,
+      "cases": 11,
+      "legacy": true,
       "train_mean": 0.881,
       "train_n": 7,
       "heldout_mean": 0.8611,
@@ -65,9 +83,37 @@
       "hallucinated": 0,
       "forbidden_hits": 0,
       "status": "rejected: G2_protected,G4_heldout"
+    },
+    {
+      "round": 3,
+      "skill": "v0",
+      "k": 3,
+      "cases": 46,
+      "legacy": false,
+      "train_mean": 0.9213,
+      "train_n": 20,
+      "heldout_mean": 0.9431,
+      "heldout_n": 14,
+      "hallucinated": 0,
+      "forbidden_hits": 0,
+      "status": "baseline"
+    },
+    {
+      "round": 3,
+      "skill": "v4",
+      "k": 3,
+      "cases": 34,
+      "legacy": false,
+      "train_mean": 0.9324,
+      "train_n": 20,
+      "heldout_mean": 0.9524,
+      "heldout_n": 14,
+      "hallucinated": 0,
+      "forbidden_hits": 0,
+      "status": "rejected: G1_targeted"
     }
   ],
-  "ledger_records": 3,
+  "ledger_records": 4,
   "adopted": 0,
-  "rejected": 3
+  "rejected": 4
 }

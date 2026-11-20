@@ -1,0 +1,314 @@
+{
+  "rep": 1,
+  "n": 34,
+  "hallucination_agree": 34,
+  "correctness_agree": 34,
+  "cases": [
+    {
+      "case_id": "d-00105475",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00107066",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00127158",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00140168",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00145473",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00165413",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00261735",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00297095",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00305941",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00317487",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00411048",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00456218",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00531865",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00561732",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00656021",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00843900",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00896285",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-00896753",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-01255652",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-01354740",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-01406618",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-01436558",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "d-01703849",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00120562",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00126937",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00128227",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00131832",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": false,
+      "det_cause_match": false,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00153126",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00413046",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00609324",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-00791209",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-01311286",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-01316236",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "v-01534577",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    }
+  ]
+}
