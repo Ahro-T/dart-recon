@@ -1,0 +1,1 @@
+{"target_failures": ["wrong_cause: dart_explain이 재작성(restatement) 후보를 제시했는데도 원인을 unexplained로 둔 과도한 보수성"], "target_case_ids": ["sk-discovery-restate"], "change_summary": "전기 숫자 변경 질문에서 dart_history로 최초값/최신값을 확인하고, dart_explain 후보가 도구 출력으로 뒷받침되면 그 원인을 명시적으로 결론 내리도록 단계를 추가했다. 도구가 반환한 값만 인용하라는 문구로 금액 날조를 막는다.", "scope": "## 순서 3~5단계 (전기 수치 확인, 원인 결론, 설명 방식)"}

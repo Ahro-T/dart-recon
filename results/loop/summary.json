@@ -1,0 +1,73 @@
+{
+  "rows": [
+    {
+      "round": 0,
+      "skill": "v0",
+      "train_mean": 0.8333,
+      "train_n": 7,
+      "heldout_mean": 0.8611,
+      "heldout_n": 4,
+      "hallucinated": 0,
+      "forbidden_hits": 0,
+      "status": "baseline"
+    },
+    {
+      "round": 0,
+      "skill": "v1",
+      "train_mean": 0.8095,
+      "train_n": 7,
+      "heldout_mean": 1.0,
+      "heldout_n": 4,
+      "hallucinated": 1,
+      "forbidden_hits": 0,
+      "status": "rejected: G1_targeted,G3_hallucination"
+    },
+    {
+      "round": 1,
+      "skill": "v0",
+      "train_mean": 0.8492,
+      "train_n": 7,
+      "heldout_mean": 0.8611,
+      "heldout_n": 4,
+      "hallucinated": 0,
+      "forbidden_hits": 0,
+      "status": "baseline"
+    },
+    {
+      "round": 1,
+      "skill": "v2",
+      "train_mean": 0.9286,
+      "train_n": 7,
+      "heldout_mean": 0.7083,
+      "heldout_n": 4,
+      "hallucinated": 1,
+      "forbidden_hits": 0,
+      "status": "rejected: G2_protected,G3_hallucination,G4_heldout"
+    },
+    {
+      "round": 2,
+      "skill": "v0",
+      "train_mean": 0.8651,
+      "train_n": 7,
+      "heldout_mean": 0.9305,
+      "heldout_n": 4,
+      "hallucinated": 0,
+      "forbidden_hits": 0,
+      "status": "baseline"
+    },
+    {
+      "round": 2,
+      "skill": "v3",
+      "train_mean": 0.881,
+      "train_n": 7,
+      "heldout_mean": 0.8611,
+      "heldout_n": 4,
+      "hallucinated": 0,
+      "forbidden_hits": 0,
+      "status": "rejected: G2_protected,G4_heldout"
+    }
+  ],
+  "ledger_records": 3,
+  "adopted": 0,
+  "rejected": 3
+}

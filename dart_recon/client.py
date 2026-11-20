@@ -17,7 +17,8 @@ from pathlib import Path
 
 BASE = "https://opendart.fss.or.kr/api"
 ROOT = Path(__file__).resolve().parent.parent
-CACHE = ROOT / "data" / "raw"
+DATA = Path(os.environ.get("DART_RECON_DATA") or ROOT / "data")  # 테스트·MCP용 데이터 디렉터리 교체
+CACHE = DATA / "raw"
 
 # reprt_code: 11011 사업보고서(연간), 11012 반기, 11013 1분기, 11014 3분기
 ANNUAL = "11011"

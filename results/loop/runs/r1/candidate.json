@@ -1,0 +1,1 @@
+{"target_failures": ["missing_fact: detail의 조정 항목 및 동일 차이가 나타나는 다른 규칙 누락"], "target_case_ids": ["lotte-holdings-hfs", "samjung-pulp-typo"], "change_summary": "설명 단계에서 규칙 detail을 끝까지 읽고 차이를 메우는 항목을 인용하며, 같은 차이가 다른 규칙에도 나타나면 그 규칙 ID를 언급하도록 했다. 모든 규칙 나열 요구는 넣지 않고 도구 반환값만 인용하도록 제한했다.", "scope": "## 순서 3단계 (결과 설명 방식)"}

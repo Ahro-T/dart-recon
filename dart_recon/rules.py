@@ -99,18 +99,23 @@ class Statements:
         self.rcept_no = self.rows[0]["rcept_no"] if self.rows else ""
         self.unit = _reporting_unit(self.rows)
 
-    def get(self, key: str, period: str) -> int | None:
+    def row(self, key: str) -> dict | None:
+        """계정 key의 원본 줄. 표준 account_id 우선, 없으면 계정명."""
         sj, ids, names = ACCOUNTS[key]
         sj_set = {"IS", "CIS"} if sj == "IS" else {sj}
         rows = [r for r in self.rows if r["sj_div"] in sj_set]
         for r in rows:
             if r["account_id"] in ids and not _mistagged(key, r):
-                return amount(r.get(f"{period}_amount"))
+                return r
         wanted = {_norm(n) for n in names}
         for r in rows:
             if _norm(r["account_nm"]) in wanted:
-                return amount(r.get(f"{period}_amount"))
+                return r
         return None
+
+    def get(self, key: str, period: str) -> int | None:
+        r = self.row(key)
+        return None if r is None else amount(r.get(f"{period}_amount"))
 
     def finding(self, rule: str, period: str, lhs: int | None, rhs: int | None, detail: str) -> Finding:
         if lhs is None or rhs is None:

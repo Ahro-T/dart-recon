@@ -1,0 +1,279 @@
+{
+  "round": 1,
+  "skill": "v2",
+  "cases": {
+    "lotte-holdings-hfs": {
+      "split": "train",
+      "protected": true,
+      "missing_answer": false,
+      "cause_match": 0,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 0.6667
+    },
+    "quantamatrix-tag": {
+      "split": "train",
+      "protected": true,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "hyosung-chem-disc": {
+      "split": "train",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "sk-discovery-restate": {
+      "split": "train",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "samjung-pulp-typo": {
+      "split": "train",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "cheongdam-unexplained": {
+      "split": "train",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "celltrion-clean": {
+      "split": "train",
+      "protected": true,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 0.5,
+      "missing_facts": [
+        "KDQ-0006"
+      ],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 0.8333
+    },
+    "metacare-unexplained": {
+      "split": "heldout",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "samyang-holdings-unexplained": {
+      "split": "heldout",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [
+        "75000000만"
+      ],
+      "forbidden_hits": [],
+      "score": 0.0
+    },
+    "viewworks-clean": {
+      "split": "heldout",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 1.0,
+      "missing_facts": [],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 1.0
+    },
+    "crown-haitai-clean": {
+      "split": "heldout",
+      "protected": false,
+      "missing_answer": false,
+      "cause_match": 1,
+      "facts_recall": 0.5,
+      "missing_facts": [
+        "KDQ-0006"
+      ],
+      "basis_ok": 1,
+      "hallucinated_amounts": [],
+      "forbidden_hits": [],
+      "score": 0.8333
+    }
+  },
+  "aggregates": {
+    "train": {
+      "n": 7,
+      "mean_score": 0.9286,
+      "cause_match": 0.8571,
+      "facts_recall": 0.9286,
+      "basis_ok": 1.0,
+      "hallucinated_amounts": 0,
+      "forbidden_hits": 0
+    },
+    "heldout": {
+      "n": 4,
+      "mean_score": 0.7083,
+      "cause_match": 1.0,
+      "facts_recall": 0.875,
+      "basis_ok": 1.0,
+      "hallucinated_amounts": 1,
+      "forbidden_hits": 0
+    },
+    "all": {
+      "n": 11,
+      "mean_score": 0.8485,
+      "cause_match": 0.9091,
+      "facts_recall": 0.9091,
+      "basis_ok": 1.0,
+      "hallucinated_amounts": 1,
+      "forbidden_hits": 0
+    }
+  },
+  "agreement": {
+    "n": 11,
+    "hallucination_agree": 10,
+    "correctness_agree": 11,
+    "cases": [
+      {
+        "case_id": "lotte-holdings-hfs",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": false,
+        "det_cause_match": false,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "quantamatrix-tag",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "hyosung-chem-disc",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "sk-discovery-restate",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "samjung-pulp-typo",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "cheongdam-unexplained",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "celltrion-clean",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "metacare-unexplained",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "samyang-holdings-unexplained",
+        "judge_hallucinated": false,
+        "det_hallucinated": true,
+        "hallucination_agree": false,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "viewworks-clean",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      },
+      {
+        "case_id": "crown-haitai-clean",
+        "judge_hallucinated": false,
+        "det_hallucinated": false,
+        "hallucination_agree": true,
+        "judge_correct": true,
+        "det_cause_match": true,
+        "correctness_agree": true
+      }
+    ]
+  }
+}

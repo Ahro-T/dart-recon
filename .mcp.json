@@ -1,0 +1,1 @@
+{"mcpServers":{"dart-recon":{"command":"python3","args":["-m","dart_recon.mcp_server"]}}}

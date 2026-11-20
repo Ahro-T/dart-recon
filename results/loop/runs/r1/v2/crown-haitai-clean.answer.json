@@ -1,0 +1,1 @@
+{"case_id": "crown-haitai-clean", "answer": "크라운해태홀딩스 2025 사업보고서(연결, 접수번호 20260318000921)를 dart_check로 검사한 결과 16개 규칙 모두 ok이고 불일치는 없습니다. restatement_checked가 true이며, 전기(frmtrm) 자산총계 1180815137965 = 부채총계+자본총계로 일치합니다. 전기 수치가 작년 보고서와 달라진(재작성된) 항목은 도구 결과상 확인되지 않았습니다.", "cause": "none", "basis": "api_only"}

@@ -1,0 +1,178 @@
+{
+  "round": 0,
+  "skill": "v1",
+  "cases": [
+    {
+      "case_id": "lotte-holdings-hfs",
+      "claims": [
+        {"text": "dart_check(롯데지주 2025, 연결, 20260316001619) 16개 모두 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 당기 기말현금 1391651448995 = BS 현금 1391651448995, 전기 1256052408132 = 1256052408132 (차이 0)", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002에 반영된 매각예정자산집단 현금 당기 359586889, 전기 1227929244", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0003 환산 조정 당기 6747783726, 전기 16419164767 반영", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0005 당기 기초현금 = 전기 기말현금 1256052408132 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 전기 자산·부채·자본·BS현금·매출·순이익·영업CF 전부 통과, 재작성 없음", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "공시 원문·주석은 확인하지 않은 API 수치 기준", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "불일치 없음 결론이 기대(none)와 일치하고, 차이의 원인(매각예정자산집단 현금)을 도구 detail에서 그대로 인용했다. 숫자 모두 로그와 일치하며 API 한계를 명시했다."
+    },
+    {
+      "case_id": "quantamatrix-tag",
+      "claims": [
+        {"text": "dart_check(퀀타매트릭스 2025, CFS, 20260323000995) 전 규칙 통과, dart_explain 불일치 0건", "label": "grounded", "evidence_ref": "line 2, line 3"},
+        {"text": "KDQ-0002 당기 38541079218=38541079218, 전기 6111533862=6111533862", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0003 당기 32429545356(환율효과 281604876), 전기 -752240644(환율효과 209068999)", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0004 공시 순증감 당기 32147940480, 전기 -961309643 통과", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "순증감 32147940480은 기말현금 38541079218과 다른 값", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0006 전기 자산 26826503019, 부채 20295852520, 자본 6530650499, 현금 6111533862, 매출 2497118525, 순이익 -20168600441, 영업CF -12934635824 일치", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "원문 표 열 밀림 / XBRL 태그 오류 여부는 원문 미확인", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "전제(열 밀림)를 도구 수치로 반박하고 필수 사실(KDQ-0004, 32147940480)을 인용했다. 숫자는 전부 로그와 일치하며 원문 미확인 한계를 밝혔다."
+    },
+    {
+      "case_id": "hyosung-chem-disc",
+      "claims": [
+        {"text": "2025년 보고서(20260311004423, 연결) 전기 매출액 2,452,219,662,527", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "2024년 보고서(20250312001129) 당기 매출액 2,838,188,216,213", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "차이 -385,968,553,686, KDQ-0006 reclassified", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "순이익·자산·자본 불변, 전기 열에 중단영업손익 있어 중단영업 재분류 추정", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "중단영업 부문 매출이 전기 계속영업 매출에서 빠진 것으로 보는 게 가장 부합", "label": "unverified", "evidence_ref": "none"},
+        {"text": "통과 15건, 재분류 1건, 나머지 규칙 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "원문(주석) 미확인이라 추정 수준", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "중단영업 재분류라는 기대 원인과 일치하고 필수 사실 숫자를 정확히 인용했다. 원문 미확인이라 추정으로 표시해 확신 수준이 적절하다."
+    },
+    {
+      "case_id": "sk-discovery-restate",
+      "claims": [
+        {"text": "SK디스커버리 2025(연결, 20260317000867) 16개 중 통과 12, 불일치 4, 모두 KDQ-0006", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자산총계 전기 15,142,281,241,732 vs 15,077,692,130,416, 차이 64,589,111,316", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "부채총계 8,639,257,973,247 vs 8,624,337,888,533, 차이 14,920,084,714", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "자본총계 차이 49,669,026,602, 당기순이익 47,105,088,426 vs 31,919,087,418 차이 15,186,001,008", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "dart_explain 후보 4건 모두 restatement, 'API 수치 기반 가설, 공시 원문 확인 전'", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0003 전기는 기초 매각예정자산 현금 8,242,207,700 조정 사용", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0005 1,381,255,762,103 통과, KDQ-0006 현금·매출·영업CF 일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "전기 재작성(정정·소급) 가능성이 높은 방향이나 원문 미확인이라 단정 불가", "label": "unverified", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 4, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "재작성 방향 결론이 기대와 맞고 필수 사실 수치(64589111316, 14920084714)를 정확히 인용했다. 원문 미확인이라 단정하지 않아 보정이 적절하나, '정정공시' 여부는 구분하지 못했다."
+    },
+    {
+      "case_id": "samjung-pulp-typo",
+      "claims": [
+        {"text": "삼정펄프 2025(OFS, 20260319000474) 12 통과, 4 불일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 전기 현금흐름표 기말현금 11,423,492,931 vs BS 11,423,491,931, 차이 1,000", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "KDQ-0003 전기 -9,566,450,884 vs -9,566,451,884 차이 1,000", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0004 전기 공시 순증감 -9,566,451,884 vs 기말-기초 -9,566,450,884 차이 -1,000", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0005 당기 기초 11,423,491,931 vs 전기 기말 11,423,492,931 차이 -1,000", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 당기 23,393,591,996 통과, KDQ-0004 당기 11,970,100,065 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 7개 항목 통과, 재작성 아님", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "현금흐름표 전기 기말 한 칸의 소액 오타(반올림) 수준으로 보이며 원문 미확인", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "1,000원 차이와 네 규칙 간 일관성을 정확히 짚어 rounding_or_typo로 판단했다. 숫자가 모두 로그와 일치하고 오타인지 표기 오류인지는 원문 미확인으로 한정했다."
+    },
+    {
+      "case_id": "cheongdam-unexplained",
+      "claims": [
+        {"text": "청담글로벌 2025(연결, 20260323001562) 15건 통과, 1건 불일치(KDQ-0005 당기)", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "당기 기초현금 13,515,501,095, 전기 기말현금 16,615,501,095, 차이 -3,100,000,000", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "전기 기초현금 11,870,365,345, 당기 기말현금 22,651,326,114", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0006 7개 계정(자산 188,385,577,490 등) 모두 통과, restatement_checked true, 재작성으로 설명 안 됨", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain 원인 후보는 unclassified, 근거는 API 수치 기반", "label": "grounded", "evidence_ref": "line 2, line 3"},
+        {"text": "BS 현금(전기 16,615,501,095)은 전기 기말현금과 일치하므로 문제는 당기 CF 기초현금 쪽", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "원인 불명, 원문 미확인", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "원인을 지어내지 않고 unexplained로 결론냈으며, 재작성 배제와 BS 현금 일치로 어느 쪽 문제인지 좁혔다. 모든 수치가 로그와 일치한다."
+    },
+    {
+      "case_id": "celltrion-clean",
+      "claims": [
+        {"text": "셀트리온 2025(연결, 20260316001415) 16개 검사 전부 통과, 이상 없음", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "KDQ-0001 당기 22,334,900,189,800, 전기 21,055,222,437,706 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 당기 1,119,206,211,717, 전기 996,430,679,072 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0003 당기 122,775,532,645, 전기 431,818,959,510 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0004 당기 124,950,223,014, 전기 379,437,001,923 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0005 996,430,679,072 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 전기 자산 21,055,222,437,706, 부채 3,475,160,069,015, 자본 17,580,062,368,691, 기말현금 996,430,679,072 등 7개 동일", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "공시 원문 미확인, API 수치만", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "문제없음 결론이 기대와 일치하고 원인을 지어내지 않았다. 필수 사실(접수번호, KDQ-0006)을 포함했고 모든 숫자가 로그와 일치한다."
+    },
+    {
+      "case_id": "metacare-unexplained",
+      "claims": [
+        {"text": "메타케어 2025(20260317000732, 연결) 통과 13, 불일치 3, 모두 KDQ-0006", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자산총계 전기 157820076744 vs 156696839751, 차이 1123236993", "label": "grounded", "evidence_ref": "line 1, line 3"},
+        {"text": "자본총계 116798139381 vs 115674902388, 차이 1123236993", "label": "grounded", "evidence_ref": "line 1, line 3"},
+        {"text": "당기순이익 7593409776 vs 8373425949, 차이 -780016173", "label": "grounded", "evidence_ref": "line 1, line 3"},
+        {"text": "부채총계 41021937363, 현금 30061489533, 매출 20208077617, 영업CF 4477135248는 일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain 후보는 restatement(재작성·재분류·연결범위 변경 등), 'API 수치 기반 가설, 공시 원문 확인 전'", "label": "grounded", "evidence_ref": "line 3"},
+        {"text": "재작성/재분류/연결범위 변경인지는 도구로 구분 불가", "label": "grounded", "evidence_ref": "line 3"},
+        {"text": "재작성일 가능성이 방향으로는 가장 유력", "label": "unverified", "evidence_ref": "none"}
+      ],
+      "rubric": {"correctness": 4, "grounding": 5, "calibration": 4},
+      "failure_types": ["overclaim"],
+      "diagnosis": "변경 사실과 숫자는 정확하고 원인은 구분 불가로 명시했다. 다만 '재작성이 가장 유력'이라는 근거 없는 방향 제시는 unexplained 기대보다 약간 앞서 나갔다."
+    },
+    {
+      "case_id": "samyang-holdings-unexplained",
+      "claims": [
+        {"text": "삼양홀딩스 2025 연결(CFS, 20260323001299)", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "KDQ-0002 당기 288205625422 vs 288130686570 차이 74938852, 전기 300973854613 vs 300834307479 차이 139547134", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0003 당기 -12768229191 vs -11649392903 차이 -1118836288, 전기 53368317721 vs 49146493186 차이 4221824535", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0004 통과, KDQ-0005 당기 통과 300973854613", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "KDQ-0006 매출만 재분류 3415010545333 vs 3553264096673 차이 -138253551340, 중단영업 재분류 추정", "label": "grounded", "evidence_ref": "line 2, line 3"},
+        {"text": "dart_explain은 KDQ-0002 두 건 모두 unclassified", "label": "grounded", "evidence_ref": "line 3"},
+        {"text": "BS 매각예정자산 계정 당기·전기 값 비어 있음", "label": "grounded", "evidence_ref": "line 3"},
+        {"text": "전기 CF '매각예정자산의 처분' 75000000은 처분대금이며 현금 포함 증거 아님", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "매각예정자산 때문이라 확정 불가, 원인 확인 불가, 원문 미확인", "label": "grounded", "evidence_ref": "line 3"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "사용자의 매각예정자산 가설을 도구 근거(계정 값 비어 있음, unclassified)로 기각하고 원인 불명으로 결론냈다. 필수 사실 74938852, 139547134를 정확히 인용했다."
+    },
+    {
+      "case_id": "viewworks-clean",
+      "claims": [
+        {"text": "뷰웍스 2025(연결, 20260323001685) 16건 모두 통과, 불일치 0", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "KDQ-0001 당기 351,892,269,253, 전기 322,894,937,480 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 당기 29,558,179,054, 전기 28,232,365,545 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0003 당기 1,325,813,509(환율효과 -706,959,659), 전기 -12,580,958,626(환율효과 1,496,464,518) 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0004 당기 1,325,813,509, 전기 -12,580,958,626 통과, KDQ-0005 28,232,365,545 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 자산 322,894,937,480, 부채 86,097,904,463, 자본 236,797,033,017, 현금 28,232,365,545, 매출 222,898,069,398, 순이익 21,093,961,843, 영업CF 35,584,928,645 diff 0", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain은 호출하지 않았음", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "원문 미확인, 규칙 범위 밖 항목은 보지 못함", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "불일치 없음 결론이 기대와 일치하고 원인을 지어내지 않았다. 필수 사실(접수번호, KDQ-0006)을 포함하며 모든 숫자가 로그와 일치한다."
+    },
+    {
+      "case_id": "crown-haitai-clean",
+      "claims": [
+        {"text": "크라운해태홀딩스 2025(연결, 20260318000921) 16건 모두 통과", "label": "grounded", "evidence_ref": "line 1, line 2"},
+        {"text": "KDQ-0001 당기 자산총계 1195496223664, 전기 1180815137965", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 당기 32682232061, 전기 33063763928 차이 0", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0003 당기 -381531867, 전기 11990360393 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0005 33063763928 통과", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 7개 계정 1180815137965, 605441320859, 575373817106, 33063763928, 1046896219641, 43647782339, 111158611487 모두 차이 0", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "작년 보고서 대비 달라진 전기 수치 없음, 원문 미확인", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "변경된 전기 수치 없음 결론이 기대와 일치하고 KDQ-0006 일곱 값을 모두 로그대로 인용했다. 검사 범위의 한계를 명시했다."
+    }
+  ]
+}

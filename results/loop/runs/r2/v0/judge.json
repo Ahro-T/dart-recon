@@ -1,0 +1,148 @@
+{
+  "round": 2,
+  "skill": "v0",
+  "cases": [
+    {
+      "case_id": "lotte-holdings-hfs",
+      "claims": [
+        {"text": "dart_check 16개 규칙 모두 ok, 접수번호 20260316001619, 연결", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 당기 1,391,651,448,995 양쪽 일치(차이 0), 매각예정자산집단 현금 359,586,889 반영", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "전기 1,256,052,408,132 일치, 매각예정 현금 1,227,929,244", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "공시 오류가 아니라 매각예정자산집단 현금 때문의 표시상 차이", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "API 수치 기준이며 원문 미대조", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "도구 출력의 KDQ-0002 detail(매각예정 현금 사용)을 그대로 인용해 held_for_sale_cash로 결론 내렸고 api_only 한계도 명시했다."
+    },
+    {
+      "case_id": "quantamatrix-tag",
+      "claims": [
+        {"text": "16개 규칙 모두 ok, 열 밀림 아님", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "당기 순증감(KDQ-0004) 32,147,940,480, 기말현금 38,541,079,218과 상이", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0002 차이 0; KDQ-0003 기말-기초 32,429,545,356, 환율변동효과 281,604,876", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0005 기초현금 = 전기 기말현금 6,111,533,862", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain 불일치 0건", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "API 수치만 확인, 원문 미대조", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "모든 수치가 dart_check/explain 출력과 일치하고 열 밀림이 없다는 결론이 기대(none)와 맞으며 api_only 표기도 적절하다."
+    },
+    {
+      "case_id": "hyosung-chem-disc",
+      "claims": [
+        {"text": "전기 매출 2,452,219,662,527 vs 2024년 보고서 당기 2,838,188,216,213, 차이 -385,968,553,686", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006이 reclassified로 판정", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "순이익·자산·자본 불변, 전기 열에 중단영업손익 있어 중단영업 재분류 추정", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "중단영업 부분이 계속영업 매출에서 빠지면서 전기 매출이 줄었다", "label": "unverified", "evidence_ref": "line 1"},
+        {"text": "API 수치 기반 추정이며 원문 주석 미확인", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 4},
+      "failure_types": [],
+      "diagnosis": "원인(discontinued_reclass)과 필수 수치가 모두 맞고 api_only를 밝혔으나, 메커니즘 문장은 추정보다 단정에 가깝다."
+    },
+    {
+      "case_id": "sk-discovery-restate",
+      "claims": [
+        {"text": "접수번호 20260317000867(2025)과 20250318001277(2024)", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "자산총계 전기 15,142,281,241,732 vs 15,077,692,130,416, 차이 64,589,111,316", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "부채총계 8,639,257,973,247 vs 8,624,337,888,533, 차이 14,920,084,714", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자본총계 6,503,023,268,485 vs 6,453,354,241,883, 차이 49,669,026,602", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "당기순이익 전기 47,105,088,426 vs 31,919,087,418, 차이 15,186,001,008", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 4건 불일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "도구는 'API 수치 기반 가설, 공시 원문 확인 전'으로만 제시", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "원인 확정 불가(cause=unexplained)", "label": "unverified", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 2, "grounding": 5, "calibration": 3},
+      "failure_types": ["wrong_cause", "missing_fact"],
+      "diagnosis": "수치는 모두 정확하나 dart_explain이 restatement 후보를 제시했는데도 cause를 unexplained로 두어 기대(restatement_disclosed)와 어긋났다; 지나치게 보수적이다."
+    },
+    {
+      "case_id": "samjung-pulp-typo",
+      "claims": [
+        {"text": "별도(OFS) 접수 20260319000474", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "전기 CF 기말 11,423,492,931 vs BS 현금 11,423,491,931, 차이 1,000원 (KDQ-0002)", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0003도 1,000원 어긋남", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "BS 현금 2024값이 2024년 보고서와 2025년 보고서에서 동일(재작성 아님)", "label": "grounded", "evidence_ref": "line 6"},
+        {"text": "CF 전기 기말현금 쪽의 오타로 보인다", "label": "unverified", "evidence_ref": "line 6"},
+        {"text": "원문 대조 못 함", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 4, "calibration": 4},
+      "failure_types": [],
+      "diagnosis": "차이 1,000원과 rounding_or_typo 결론이 맞고 history로 BS 불변을 확인했으나, '천 원 단위 한 자리' 표현이 부정확하고 오타 쪽 귀속은 추론이다."
+    },
+    {
+      "case_id": "cheongdam-unexplained",
+      "claims": [
+        {"text": "당기 기초현금 13,515,501,095, 전기 기말현금 16,615,501,095, 차이 -3,100,000,000 (KDQ-0005)", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "16개 규칙 중 이것만 불일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain 원인 후보 unclassified, API 수치 기반 가설", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "재작성·중단영업·매각예정 현금 등 구체 원인 확인 불가, 원인 불명", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "필수 사실과 수치가 정확하고 원인 불명을 올바르게 유지했으며 api_only 한계도 적절히 밝혔다."
+    },
+    {
+      "case_id": "celltrion-clean",
+      "claims": [
+        {"text": "연결, 접수번호 20260316001415, 16개 규칙 모두 ok", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자산총계 22334900189800 = 부채+자본, 전기 21055222437706", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "CF 기말현금과 BS 현금 일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "restatement_checked=true, 이상 없음", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "도구 출력과 모두 일치하며 이상 없음(none) 결론이 맞고 API 기준임을 명시했다."
+    },
+    {
+      "case_id": "metacare-unexplained",
+      "claims": [
+        {"text": "KDQ-0006 불일치 3건", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자산총계 전기 157,820,076,744 vs 156,696,839,751, 차이 1,123,236,993", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자본총계 116,798,139,381 vs 115,674,902,388, 차이 동일", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "당기순이익 7,593,409,776 vs 8,373,425,949, 차이 -780,016,173", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain은 일반적 재작성 후보만 제시, 주석 재작성 공시 근거는 도구 출력에 없음", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "수치가 모두 맞고 재작성 단정을 피해 unexplained로 보수적으로 결론 내려 기대와 일치한다."
+    },
+    {
+      "case_id": "samyang-holdings-unexplained",
+      "claims": [
+        {"text": "연결 당기 CF 기말 288205625422 vs BS 288130686570, 차이 74938852", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "전기 300973854613 vs 300834307479, 차이 139547134", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "dart_explain이 두 기간 모두 unclassified로 분류", "label": "grounded", "evidence_ref": "line 2"},
+        {"text": "매각예정 때문이라고 확인할 근거 없음, 원문 필요, 원인 미확인", "label": "grounded", "evidence_ref": "line 2"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "필수 수치가 정확하고 매각예정 가설을 근거 없이 수용하지 않아 unexplained 기대와 일치한다."
+    },
+    {
+      "case_id": "viewworks-clean",
+      "claims": [
+        {"text": "연결, 접수번호 20260323001685, 16개 규칙 모두 ok", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "자산총계 당기 351892269253, 전기 322894937480, 차이 0", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "CF 기말현금과 BS 현금 당기 29558179054 일치", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "restatement_checked true, 어긋나는 곳 없음", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "모든 수치가 도구 로그와 일치하고 none 결론이 맞으며 API 기준 한계도 밝혔다."
+    },
+    {
+      "case_id": "crown-haitai-clean",
+      "claims": [
+        {"text": "연결, 접수번호 20260318000921, 16개 규칙 모두 ok", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "KDQ-0006 restatement_checked=true, 7건 모두 ok", "label": "grounded", "evidence_ref": "line 1"},
+        {"text": "BS 등식, CF 기말현금-BS 현금 당기·전기, 현금흐름 브리지 차이 0", "label": "grounded", "evidence_ref": "line 1"}
+      ],
+      "rubric": {"correctness": 5, "grounding": 5, "calibration": 5},
+      "failure_types": [],
+      "diagnosis": "도구 출력과 정확히 일치하며 달라진 전기 수치가 없다는 none 결론이 맞다."
+    }
+  ]
+}

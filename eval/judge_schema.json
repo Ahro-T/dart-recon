@@ -1,0 +1,50 @@
+{
+  "$comment": "judge.json 스키마. dart_recon/evalkit.py의 검증기가 지원하는 JSON Schema 부분집합만 사용한다.",
+  "type": "object",
+  "required": ["round", "skill", "cases"],
+  "additionalProperties": false,
+  "properties": {
+    "round": {"type": "integer", "minimum": 0},
+    "skill": {"type": "string", "minLength": 1},
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["case_id", "claims", "rubric", "failure_types", "diagnosis"],
+        "additionalProperties": false,
+        "properties": {
+          "case_id": {"type": "string", "minLength": 1},
+          "claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["text", "label", "evidence_ref"],
+              "additionalProperties": false,
+              "properties": {
+                "text": {"type": "string", "minLength": 1},
+                "label": {"type": "string", "enum": ["grounded", "unverified", "hallucinated"]},
+                "evidence_ref": {"type": "string"}
+              }
+            }
+          },
+          "rubric": {
+            "type": "object",
+            "required": ["correctness", "grounding", "calibration"],
+            "additionalProperties": false,
+            "properties": {
+              "correctness": {"type": "integer", "minimum": 1, "maximum": 5},
+              "grounding": {"type": "integer", "minimum": 1, "maximum": 5},
+              "calibration": {"type": "integer", "minimum": 1, "maximum": 5}
+            }
+          },
+          "failure_types": {
+            "type": "array",
+            "items": {"type": "string", "enum": ["wrong_cause", "missing_fact", "ungrounded_number", "wrong_basis", "overclaim", "false_alarm", "other"]}
+          },
+          "diagnosis": {"type": "string"}
+        }
+      }
+    }
+  }
+}

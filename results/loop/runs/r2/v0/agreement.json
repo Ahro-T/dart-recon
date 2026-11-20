@@ -1,0 +1,106 @@
+{
+  "n": 11,
+  "hallucination_agree": 11,
+  "correctness_agree": 10,
+  "cases": [
+    {
+      "case_id": "lotte-holdings-hfs",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": false,
+      "correctness_agree": false
+    },
+    {
+      "case_id": "quantamatrix-tag",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "hyosung-chem-disc",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "sk-discovery-restate",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": false,
+      "det_cause_match": false,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "samjung-pulp-typo",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "cheongdam-unexplained",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "celltrion-clean",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "metacare-unexplained",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "samyang-holdings-unexplained",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "viewworks-clean",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    },
+    {
+      "case_id": "crown-haitai-clean",
+      "judge_hallucinated": false,
+      "det_hallucinated": false,
+      "hallucination_agree": true,
+      "judge_correct": true,
+      "det_cause_match": true,
+      "correctness_agree": true
+    }
+  ]
+}
