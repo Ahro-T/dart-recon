@@ -296,3 +296,16 @@ def restatement(current: Statements, previous: Statements) -> list[Finding]:
         revenue.status = "reclassified"
         revenue.detail += " | 중단영업 재분류 추정(순이익·자산·자본 불변, 전기 열에 중단영업손익 있음)"
     return out
+
+
+# ---- rule registry -------------------------------------------------------------------
+# 규칙마다 고정 ID를 준다. 문서는 rules/<ID>.md, 테스트는 tests/test_rules.py. tests/test_registry.py가
+# 셋 중 하나라도 빠지면 실패한다. ID는 재사용하지 않는다(규칙을 없애도 번호는 비워 둔다).
+RULE_IDS = {
+    "bs_equation": "KDQ-0001",
+    "cf_end_vs_bs_cash": "KDQ-0002",
+    "cf_bridge": "KDQ-0003",
+    "cf_net_change_label": "KDQ-0004",
+    "cf_prior_end_is_current_begin": "KDQ-0005",
+    "restatement": "KDQ-0006",
+}

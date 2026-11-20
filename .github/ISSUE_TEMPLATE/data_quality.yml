@@ -1,0 +1,82 @@
+# 구조 출처: dgunning/edgartools .github/ISSUE_TEMPLATE/data_quality_issue.md (MIT, docs/THIRD_PARTY_edgartools_LICENSE.txt)
+name: 불일치 제보
+description: 공시 재무제표 숫자가 서로 맞지 않거나, 이 도구의 판정이 틀린 경우
+title: "[불일치] <회사> <연도> <규칙 ID>"
+labels: ["data-quality", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        불일치는 오류 확정이 아닙니다. 회사가 틀렸다고 단정하지 말고, 무엇이 안 맞는지와 근거만 적어 주세요.
+        DART 원본 데이터 파일은 첨부하지 말고 접수번호(rcept_no)와 위치만 적어 주세요.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 제보 종류
+      options:
+        - 규칙이 잡지 못한 불일치
+        - 규칙의 오탐(정당한 차이인데 mismatch로 나옴)
+        - 원인 미확인 사례의 원인을 찾음
+        - 기타
+    validations:
+      required: true
+  - type: input
+    id: corp
+    attributes:
+      label: 회사명 · corp_code
+      placeholder: "효성화학 · 00117212"
+    validations:
+      required: true
+  - type: input
+    id: rcept_no
+    attributes:
+      label: 접수번호(rcept_no) · 사업연도 · 연결/별도
+      placeholder: "20260311004423 · 2025 · CFS"
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: 관련 규칙 ID (없으면 비움)
+      placeholder: "KDQ-0006"
+  - type: textarea
+    id: numbers
+    attributes:
+      label: 숫자
+      description: 좌변, 우변, 차이(원 단위). 어느 표·어느 열인지.
+    validations:
+      required: true
+  - type: dropdown
+    id: evidence
+    attributes:
+      label: 근거 구분
+      options:
+        - 원문 확인 (DART 공시 화면의 본문·주석을 읽음)
+        - API 수치만 (OpenDART 재무제표 API 값만 봄)
+        - 아직 없음
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: 원문 위치
+      description: 원문 확인이면 보고서·표·주석 번호와 인용. 추측은 적지 말고 '원인 미확인'으로 두세요.
+  - type: dropdown
+    id: verdict
+    attributes:
+      label: 제안 판정
+      options:
+        - 진짜 불일치
+        - 정당한 기준 차이
+        - 규칙 오탐
+        - 원인 미확인
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 재현 명령
+      value: |
+        ```
+        python3 -m dart_recon.run --year 2025 --sample 600 --seed 7
+        ```

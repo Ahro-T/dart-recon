@@ -1,0 +1,24 @@
+name: 새 규칙 제안
+description: 공시 재무제표에서 항상 성립해야 하는 관계를 규칙으로 추가
+title: "[규칙] <검사식 한 줄>"
+labels: ["rule-proposal"]
+body:
+  - type: textarea
+    id: check
+    attributes:
+      label: 검사식
+      placeholder: "당기 기초현금 = 전기 기말현금"
+    validations:
+      required: true
+  - type: textarea
+    id: basis
+    attributes:
+      label: 근거
+      description: 회계기준 조항 또는 항상 성립하는 이유. 기준서 문단은 원문을 확인했는지 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: cases
+    attributes:
+      label: 사례
+      description: 이 규칙이 잡을 실제 공시 rcept_no (규칙 승격 기준은 원인이 같은 사례 3건)

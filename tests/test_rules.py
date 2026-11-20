@@ -1,7 +1,7 @@
 import unittest
 
-from dart_recon.rules import (Statements, bs_equation, cf_bridge, cf_end_vs_bs_cash, cf_net_change_label, classify,
-                              restatement)
+from dart_recon.rules import (Statements, bs_equation, cf_bridge, cf_end_vs_bs_cash, cf_net_change_label,
+                              cf_prior_end_is_current_begin, classify, restatement)
 
 
 def row(sj, aid, name, th, fr="", detail="-"):
@@ -105,6 +105,18 @@ class Rules(unittest.TestCase):
                                        row("IS", "ifrs-full_ProfitLoss", "당기순이익", 10, 5)] + disc}, "t", 2025, "CFS")
         f = next(x for x in restatement(changed, then) if x.detail.startswith("revenue"))
         self.assertEqual(f.status, "mismatch")
+
+    def test_current_begin_must_equal_prior_end(self):
+        [f] = cf_prior_end_is_current_begin(stmts(CF_BASE))
+        self.assertEqual((f.period, f.status, f.lhs, f.rhs), ("thstrm", "ok", 100, 100))
+        # 기초현금이 전기 기말현금과 다르면 mismatch, 차이 = 당기 기초 - 전기 기말
+        shifted = [row("CF", "dart_CashAndCashEquivalentsAtBeginningOfPeriodCf", "기초현금", 69, 90)] + CF_BASE[1:]
+        [f] = cf_prior_end_is_current_begin(stmts(shifted))
+        self.assertEqual((f.status, f.diff), ("mismatch", -31))
+        # 전기 기말현금이 없으면 missing
+        no_prior = [row("CF", "dart_CashAndCashEquivalentsAtEndOfPeriodCf", "기말현금", 130)] + CF_BASE[:1]
+        [f] = cf_prior_end_is_current_begin(stmts(no_prior))
+        self.assertEqual(f.status, "missing")
 
 
 if __name__ == "__main__":

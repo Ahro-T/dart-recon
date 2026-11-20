@@ -1,30 +1,34 @@
-# fin — DART 재무제표 자동 대사기·시점별 저장(pit)
+# dart-recon
 
-dalab의 금융 데이터 모듈이다. 모든 명령은 `fin/` 디렉터리에서 실행한다. 금융 질문 분석은 `projects/<slug>/`에서 이 모듈을 가져다 쓴다.
+한국 상장사 공시 재무제표의 내부 정합성을 공개 규칙으로 검사하고, 불일치마다 원인 후보와 근거를 남기는 도구.
 
+- **무엇:** 재무상태표·현금흐름표·전년 보고서 사이에서 항상 맞아야 하는 관계 6개를 검사한다. 규칙마다 ID·문서·테스트가 있다(`rules/`).
+- **어떻게:** 불일치를 오류로 단정하지 않는다. 원인을 분류하고, 원문 공시로 확인한 것과 API 수치만 본 것을 구분해 판정한다.
+- **결과:** 아래 표. 모든 숫자는 `results/` 파일에서 나온다.
+
+이 도구는 회사의 잘잘못을 판정하거나 부실을 예측하지 않는다. 투자 조언이 아니다.
 
 OpenDART 재무제표 API(`fnlttSinglAcntAll`)로 상장사 사업보고서를 받아, 공시 숫자들이 서로 맞는지 규칙으로 검사한다.
 불일치는 오류 확정이 아니다. 원인(반올림·오타, 재작성, 기준 차이, 우리 규칙의 오탐)을 `triage`로 분류하고 원문 공시와 대조해 판정한다.
 표준 라이브러리만 쓴다.
 
-## 규칙 (`dart_recon/rules.py`)
-| 규칙 | 검사 |
-|---|---|
-| `bs_equation` | 자산총계 = 부채총계 + 자본총계 |
-| `cf_end_vs_bs_cash` | 현금흐름표 기말현금 = 재무상태표 현금및현금성자산 (+ 현금흐름표 주석의 '매각예정자산집단에 포함된 현금') |
-| `cf_bridge` | 기말 − 기초 = 영업 + 투자 + 재무 + 조정항목(환율효과·연결범위 변동 등, 부분집합 중 최적) |
-| `cf_net_change_label` | 공시된 '현금 순증감'이 (영업+투자+재무) 또는 (기말−기초) 중 하나와 일치 |
-| `cf_prior_end_is_current_begin` | 당기 기초현금 = 전기 기말현금 |
-| `restatement` | 올해 보고서의 전기 숫자 = 작년 보고서의 당기 숫자 (자산·부채·자본·현금·매출·순이익·영업CF) |
+## 규칙 (`dart_recon/rules.py`, 문서 `rules/`)
+| ID | 코드 | 검사 |
+|---|---|---|
+| [KDQ-0001](rules/KDQ-0001.md) | `bs_equation` | 자산총계 = 부채총계 + 자본총계 |
+| [KDQ-0002](rules/KDQ-0002.md) | `cf_end_vs_bs_cash` | 현금흐름표 기말현금 = 재무상태표 현금및현금성자산 (+ 현금흐름표 주석의 '매각예정자산집단에 포함된 현금') |
+| [KDQ-0003](rules/KDQ-0003.md) | `cf_bridge` | 기말 − 기초 = 영업 + 투자 + 재무 + 조정항목(환율효과·연결범위 변동 등, 부분집합 중 최적) |
+| [KDQ-0004](rules/KDQ-0004.md) | `cf_net_change_label` | 공시된 '현금 순증감'이 (영업+투자+재무) 또는 (기말−기초) 중 하나와 일치 |
+| [KDQ-0005](rules/KDQ-0005.md) | `cf_prior_end_is_current_begin` | 당기 기초현금 = 전기 기말현금 |
+| [KDQ-0006](rules/KDQ-0006.md) | `restatement` | 올해 보고서의 전기 숫자 = 작년 보고서의 당기 숫자 (자산·부채·자본·현금·매출·순이익·영업CF) |
 
 상태: `ok`, `rounding`(공시 단위 2단위 이내), `mismatch`, `missing`(입력 계정 없음), `reclassified`(restatement 중 중단영업 재분류로 추정되는 매출 감소).
 공시 단위(원/천원/백만원)는 숫자의 나눠떨어짐으로 추정한다.
 
 ## 실행
 ```
-# 키: dalab 루트 .env의 DART_API_KEY. .env, fin/data/는 커밋하지 않는다
-cd fin
-python3 -m dart_recon.run --year 2025 --sample 600 --seed 7      # fin/data/raw에 캐시하며 수집
+# 키: 저장소 루트 .env의 DART_API_KEY(또는 환경변수). .env, data/는 커밋하지 않는다
+python3 -m dart_recon.run --year 2025 --sample 600 --seed 7      # data/raw에 캐시하며 수집
 DART_OFFLINE=1 python3 -m dart_recon.run --year 2025 --sample 600 --seed 7   # 캐시만 사용
 python3 -m dart_recon.triage --year 2025 --sample 600 --seed 7   # 원인 분류
 DART_OFFLINE=1 python3 -m dart_recon.pit --year 2025 --sample 600 --seed 7   # 캐시 -> pit 테이블
@@ -69,3 +73,14 @@ DART 서버는 연속 요청 시 연결을 끊는다. 클라이언트는 요청�
 - 표본 600개 중 323개만 검증됨. 수집 실패 127개는 결과에 없다.
 - `reclassified`, `held_for_sale_cash` 등은 데이터 패턴에서 나온 가설이며 일부만 원문으로 확인했다.
 - `restatement`는 올해와 작년 보고서가 같은 재무제표 구분(연결/별도)일 때만 비교한다.
+
+## 기여
+- 불일치를 찾았거나 판정이 틀렸으면 「불일치 제보」 이슈로 올린다(`.github/ISSUE_TEMPLATE/data_quality.yml`). 근거 구분(원문 확인 / API 수치만)을 꼭 적는다.
+- PR은 `.github/PULL_REQUEST_TEMPLATE.md`의 관문을 통과해야 한다. 규칙에는 ID·문서·테스트가 모두 있어야 하며 `tests/test_registry.py`가 검사한다.
+- 작업 규칙: `AGENTS.md`. 이슈 처리·테스트 에이전트: `.claude/agents/`.
+
+## 참고
+규칙 문서 구조는 XBRL US DQC 규칙을, 이슈 양식과 에이전트 운영은 edgartools를 참고했다. 출처와 라이선스: `docs/references.md`.
+
+## 라이선스
+MIT

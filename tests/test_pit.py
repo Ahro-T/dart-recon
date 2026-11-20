@@ -62,10 +62,10 @@ class Pit(unittest.TestCase):
 
 
 class ApiKeyPath(unittest.TestCase):
-    def test_reads_dalab_root_env(self):
+    def test_reads_repo_root_env(self):
         with tempfile.TemporaryDirectory() as d:
-            root = Path(d) / "fin"
-            (Path(d) / ".env").write_text("DART_API_KEY=abc\n")
+            root = Path(d)
+            (root / ".env").write_text("DART_API_KEY=abc\n")
             with mock.patch.dict("os.environ", {}, clear=True), mock.patch.object(client, "ROOT", root):
                 self.assertEqual(client.api_key(), "abc")
 
